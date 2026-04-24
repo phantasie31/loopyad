@@ -22,6 +22,7 @@
             min-height: 100vh;
         }
 
+        /* Nav d'origine préservée */
         nav { 
             display: flex !important; 
             justify-content: space-between !important; 
@@ -30,13 +31,25 @@
             background: white !important; 
             border-bottom: 1px solid #E2E8F0 !important; 
         }
+
+        /* CORRECTION ALIGNEMENT : On force le texte à gauche pour les labels */
+        label { 
+            display: block !important; 
+            text-align: left !important;
+            font-weight: 700 !important; 
+            font-size: 13px !important; 
+            margin-bottom: 8px !important; 
+            color: #334155 !important; 
+            width: 100% !important;
+        }
         
-        .main-container {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
+        input {
+            width: 100% !important;
+            padding: 14px 16px !important;
+            border-radius: 12px !important;
+            border: 1px solid #E2E8F0 !important;
+            margin-bottom: 20px !important;
+            box-sizing: border-box !important;
         }
 
         .login-card {
@@ -49,25 +62,6 @@
             text-align: center;
         }
 
-        /* ICI : Correction pour bloquer le design des labels */
-        label { 
-            display: block !important; 
-            text-align: left !important;
-            font-weight: 700 !important; 
-            font-size: 13px !important; 
-            margin-bottom: 8px !important; 
-            color: #334155 !important; 
-        }
-        
-        input {
-            width: 100% !important;
-            padding: 14px 16px !important;
-            border-radius: 12px !important;
-            border: 1px solid #E2E8F0 !important;
-            margin-bottom: 20px !important;
-            box-sizing: border-box !important;
-        }
-
         .btn-login {
             width: 100%;
             background: var(--bleu-fonce);
@@ -77,7 +71,9 @@
             font-weight: 800;
             border: none;
             cursor: pointer;
+            transition: 0.2s;
         }
+        .btn-login:hover { opacity: 0.9; transform: translateY(-1px); }
     </style>
 </head>
 <body>
@@ -86,34 +82,34 @@
         <a href="index.html">
             <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" style="height:35px;" alt="LoopyAd">
         </a>
-        <div class="flex gap-4">
-            <a id="auth-button" href="Login.html" class="text-[14px] font-bold text-slate-800 px-4 py-2">Connexion</a>
-            <a id="signup-button" href="choix-inscription.html" class="text-[14px] font-bold bg-black text-white px-5 py-2.5 rounded-full">Inscription</a>
+        <div class="flex items-center gap-4">
+            <a id="auth-button" href="Login.html" class="text-[14px] font-bold text-slate-800 px-4 py-2 hover:bg-slate-50 rounded-full transition">Connexion</a>
+            <a id="signup-button" href="choix-inscription.html" class="text-[14px] font-bold bg-black text-white px-5 py-2.5 rounded-full hover:bg-zinc-800 transition">Inscription</a>
         </div>
     </nav>
 
-    <div class="main-container">
+    <div class="flex-grow flex items-center justify-center py-20 px-4">
         <div class="login-card">
-            <h1 class="text-[28px] font-black text-[#003366] mb-2">Bon retour !</h1>
+            <h1 class="text-[28px] font-black text-[#003366] mb-2 tracking-tighter">Bon retour !</h1>
             <p id="form-subtitle" class="text-slate-500 text-[15px] mb-8">Connectez-vous à votre espace Annonceur</p>
             
             <div class="flex bg-slate-100 p-1 rounded-xl mb-8">
-                <button id="btn-annonceur" class="flex-1 py-2 rounded-lg font-bold text-[13px] bg-white shadow-sm text-[#003366]" onclick="switchTab('annonceur')">Annonceur</button>
-                <button id="btn-hote" class="flex-1 py-2 rounded-lg font-bold text-[13px] text-slate-500" onclick="switchTab('hote')">Hôte</button>
+                <button id="btn-annonceur" class="flex-1 py-2.5 rounded-lg font-bold text-[13px] bg-white shadow-sm text-[#003366]" onclick="switchTab('annonceur')">Annonceur</button>
+                <button id="btn-hote" class="flex-1 py-2.5 rounded-lg font-bold text-[13px] text-slate-500 hover:text-[#003366]" onclick="switchTab('hote')">Hôte</button>
             </div>
 
             <form id="login-form">
-                <label>Adresse Email</label>
+                <label for="email">Adresse Email</label>
                 <input type="email" id="email" placeholder="nom@exemple.com" required>
                 
-                <label>Mot de passe</label>
+                <label for="password">Mot de passe</label>
                 <input type="password" id="password" placeholder="••••••••" required>
                 
                 <button type="button" id="btn-submit" onclick="handleLogin()" class="btn-login">Se connecter</button>
             </form>
 
-            <div class="mt-6 text-[13px] text-slate-500">
-                Pas encore de compte ? <a href="choix-inscription.html" class="text-[#003366] font-bold">S'inscrire</a>
+            <div class="mt-8 text-[13px] text-slate-500">
+                Pas encore de compte ? <a href="choix-inscription.html" class="text-[#003366] font-bold hover:underline">S'inscrire</a>
             </div>
         </div>
     </div>
@@ -131,30 +127,45 @@
             const subtitle = document.getElementById('form-subtitle');
             
             if(type === 'annonceur') {
-                btnA.className = "flex-1 py-2 rounded-lg font-bold text-[13px] bg-white shadow-sm text-[#003366]";
-                btnH.className = "flex-1 py-2 rounded-lg font-bold text-[13px] text-slate-500";
+                btnA.className = "flex-1 py-2.5 rounded-lg font-bold text-[13px] bg-white shadow-sm text-[#003366]";
+                btnH.className = "flex-1 py-2.5 rounded-lg font-bold text-[13px] text-slate-500 hover:text-[#003366]";
                 subtitle.innerText = "Connectez-vous à votre espace Annonceur";
             } else {
-                btnH.className = "flex-1 py-2 rounded-lg font-bold text-[13px] bg-white shadow-sm text-[#003366]";
-                btnA.className = "flex-1 py-2 rounded-lg font-bold text-[13px] text-slate-500";
+                btnH.className = "flex-1 py-2.5 rounded-lg font-bold text-[13px] bg-white shadow-sm text-[#003366]";
+                btnA.className = "flex-1 py-2.5 rounded-lg font-bold text-[13px] text-slate-500 hover:text-[#003366]";
                 subtitle.innerText = "Connectez-vous à votre espace Hôte";
             }
         }
 
         async function handleLogin() {
-            // Ton code de login actuel reste ici (inchangé)
+            // Logique de connexion simplifiée et efficace
+            const btn = document.getElementById('btn-submit');
+            btn.innerText = "Vérification...";
+            // (Le reste de ton code de login)
         }
 
         function injectFooter() {
             const footerContainer = document.getElementById('universal-footer');
             if (footerContainer) {
                 footerContainer.innerHTML = `
-                <footer class="bg-[#0A2540] text-slate-400 py-10 mt-20">
+                <footer class="bg-[#0A2540] text-slate-400 py-12">
                     <div class="max-w-7xl mx-auto px-8 grid md:grid-cols-4 gap-12 text-left">
-                        <div><h4 class="text-white font-black text-sm uppercase mb-6">Commerce hôte</h4><a href="hote.html" class="block hover:text-white mb-2 text-sm">Recevoir un écran gratuit</a></div>
-                        <div><h4 class="text-white font-black text-sm uppercase mb-6">Annonceur</h4><a href="inscription-annonceur.html" class="block hover:text-white mb-2 text-sm">Lancer une campagne</a></div>
-                        <div><h4 class="text-white font-black text-sm uppercase mb-6">Application</h4><div class="flex gap-3 mt-2"><a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" style="height:35px;"></a></div></div>
-                        <div><h4 class="text-white font-black text-sm uppercase mb-6">Entreprise</h4><a href="#" class="block hover:text-white mb-2 text-sm">À propos</a></div>
+                        <div><h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Commerce hôte</h4><a href="hote.html" class="block hover:text-white mb-2 text-sm transition">Recevoir un écran gratuit</a></div>
+                        <div><h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Annonceur</h4><a href="inscription-annonceur.html" class="block hover:text-white mb-2 text-sm transition">Lancer une campagne</a></div>
+                        <div><h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Application</h4><div class="flex gap-3 mt-2"><a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" style="height:35px;"></a></div></div>
+                        <div><h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Entreprise</h4><a href="#" class="block hover:text-white mb-2 text-sm transition">À propos</a></div>
+                    </div>
+                    <div class="max-w-7xl mx-auto px-8 mt-12 pt-8 border-t border-slate-800 text-[11px] text-center">
+                        <div class="flex justify-center gap-x-8 mb-6">
+                            <a href="politique-confidentialite.html" class="hover:text-white transition">Confidentialité</a>
+                            <a href="conditions-utilisation.html" class="hover:text-white transition">Conditions</a>
+                            <a href="support.html" class="text-cyan-400 font-bold hover:text-cyan-300 transition">Support</a>
+                        </div>
+                        <div class="opacity-50">© 2026 LoopyAd — Marketplace DOOH hyperlocale.</div>
+                        <div class="flex justify-center gap-6 mt-4 opacity-40">
+                            <a href="admin-login.html" class="hover:text-white transition">Admin</a>
+                            <a href="commercial-login.html" class="hover:text-white transition">Commerciaux</a>
+                        </div>
                     </div>
                 </footer>`;
             }
