@@ -29,7 +29,6 @@
         .feature-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
         .step-num { font-size: 40px; font-weight: 900; color: var(--bleu-cyan); opacity: 0.3; line-height: 1; margin-bottom: 15px; }
 
-        /* Style spécifique pour la carte */
         #map { height: 550px; width: 100%; border-radius: 24px; z-index: 1; background: #e5e7eb; }
         .custom-popup .leaflet-popup-content-wrapper { border-radius: 15px; padding: 5px; font-family: 'Inter', sans-serif; }
     </style>
@@ -256,7 +255,7 @@
             <a href="#" class="block hover:text-white mb-2 text-sm">À propos</a>
         </div>
     </div>
-    <div class="max-w-7xl mx-auto px-8 mt-20 pt-10 border-t border-slate-800 text-[10px] text-center">
+    <div class="max-w-7xl mx-auto px-8 mt-8 pt-10 border-t border-slate-800 text-[10px] text-center">
         <div class="flex flex-wrap gap-x-6 gap-y-3 justify-center mb-8">
             <a href="politique-confidentialite.html" class="hover:text-white">Politique de confidentialité</a>
             <a href="conditions-utilisation.html" class="hover:text-white">Conditions d'utilisation</a>
@@ -271,18 +270,15 @@
 </footer>
 
 <script>
-    // Configuration Supabase
     const SUPABASE_URL = 'https://srfxehetueqazykzwrhw.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZnhlaGV0dWVxYXp5a3p3cmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NjQ4NjksImV4cCI6MjA5MjU0MDg2OX0.tqw6lik68x0js0VVm-xAuLFZ17mFf3LM6h5g85eow68';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Initialisation Carte (attributionControl: false cache les crédits en bas à droite)
     const map = L.map('map', { 
         scrollWheelZoom: false,
         attributionControl: false 
     }).setView([39.4699, -0.3763], 12);
 
-    // Correctif CARTO
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map);
 
     async function chargerEcrans() {
@@ -303,10 +299,3 @@
                     </div>`);
             }
         });
-    }
-    chargerEcrans();
-    setTimeout(() => { map.invalidateSize(); }, 500);
-</script>
-
-</body>
-</html>
