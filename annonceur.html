@@ -3,184 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LoopyAd - Choisissez vos écrans</title>
+    <title>LoopyAd — Sélection des Écrans</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
-        body { font-family: 'Inter', system_ui, sans-serif; }
-        .hero-bg { background: linear-gradient(135deg, #00D4FF 0%, #0A2540 100%); }
-        #map { height: 520px; width: 100%; border-radius: 24px; border: 3px solid #0A2540; z-index: 1; background: #e5e7eb; }
-        .custom-popup .leaflet-popup-content-wrapper { border-radius: 15px; padding: 5px; font-family: 'Inter', sans-serif; }
-        nav { padding: 0 80px !important; height: 76px !important; }
+        :root { --brand-blue: #003366; --accent-cyan: #00D4FF; }
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; color: #1E293B; }
+        
+        /* Glassmorphism & Premium UI */
+        .hero-gradient { 
+            background: radial-gradient(circle at top right, #0A2540, #003366); 
+            border-radius: 0 0 50px 50px;
+        }
+        
+        #map { 
+            height: 600px; 
+            width: 100%; 
+            border-radius: 32px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            z-index: 1;
+        }
+
+        /* Leaflet Overrides */
+        .leaflet-popup-content-wrapper { border-radius: 20px; padding: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .leaflet-popup-tip { display: none; }
+        
+        /* Custom Scrollbar */
+        #selected-list::-webkit-scrollbar { width: 4px; }
+        #selected-list::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--brand-blue));
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-gradient:hover:not(.disabled) { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(0, 212, 255, 0.3); }
+        .disabled { opacity: 0.3; cursor: not-allowed; filter: grayscale(0.5); }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="min-h-screen flex flex-col">
 
-<nav class="bg-white border-b sticky top-0 z-50 flex items-center justify-between">
-    <a href="index.html" class="flex items-center">
-        <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" alt="LoopyAd" style="height: 35px;">
-    </a>
-    <div class="flex items-center gap-6">
-        <a href="index.html" class="text-[13px] font-bold text-slate-500 hover:text-slate-800 transition">← Retour à l'accueil</a>
-    </div>
-</nav>
-
-<div class="hero-bg text-white py-16">
-    <div class="max-w-5xl mx-auto px-8 text-center">
-        <h1 class="text-5xl font-black leading-tight mb-4 tracking-tighter">Choisissez vos écrans</h1>
-        <p id="info-profil" class="text-xl text-cyan-100 opacity-90 italic">Cumulez plusieurs spots sur les mêmes écrans si vous le souhaitez</p>
-    </div>
-</div>
-
-<div class="max-w-7xl mx-auto px-8 py-10">
-    <div class="flex flex-col lg:flex-row gap-10">
-        <div class="flex-1">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-black text-[#003366] tracking-tight">Carte des écrans</h2>
-                <div id="selected-count" class="bg-white px-5 py-2 rounded-2xl font-bold text-slate-600 shadow-sm border border-slate-100">0 spot sélectionné</div>
-            </div>
-            <div id="map"></div>
+    <nav class="bg-white border-b border-slate-100 px-12 md:px-24 h-20 flex items-center justify-between sticky top-0 z-[1000]">
+        <a href="index.html" class="hover:opacity-80 transition">
+            <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" alt="LoopyAd" class="h-9">
+        </a>
+        <div class="flex items-center gap-8">
+            <a href="index.html" class="text-[13px] font-bold text-slate-400 hover:text-slate-900 transition flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                Quitter la sélection
+            </a>
         </div>
+    </nav>
 
-        <div class="lg:w-96 bg-white rounded-3xl shadow-xl p-8 h-fit sticky top-24 border border-slate-100">
-            <h3 class="font-black text-[#003366] text-xl mb-6">Votre sélection</h3>
-            <div id="selected-list" class="space-y-4 min-h-[280px]">
-                <p class="text-gray-400 text-center py-12">Aucun écran sélectionné</p>
-            </div>
-
-            <div onclick="continuer()" id="continue-btn" 
-                 class="mt-8 w-full py-5 bg-gradient-to-r from-[#00D4FF] to-[#0A2540] text-white text-center rounded-2xl font-black text-lg cursor-pointer opacity-50 pointer-events-none transition-all hover:scale-[1.02]">
-                Continuer avec <span id="count-text">0</span> spot(s)
+    <header class="hero-gradient text-white pt-16 pb-24">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="max-w-3xl">
+                <h1 class="text-5xl font-[900] tracking-tighter mb-4">Ciblez vos écrans.</h1>
+                <p id="info-profil" class="text-xl text-cyan-100/80 font-medium italic">Analysez la carte et réservez vos emplacements stratégiques.</p>
             </div>
         </div>
-    </div>
-</div>
+    </header>
 
-<script>
-    let selected = [];
-    const SUPABASE_URL = 'https://srfxehetueqazykzwrhw.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZnhlaGV0dWVxYXp5a3p3cmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NjQ4NjksImV4cCI6MjA5MjU0MDg2OX0.tqw6lik68x0js0VVm-xAuLFZ17mFf3LM6h5g85eow68';
-    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    const map = L.map('map', { scrollWheelZoom: false, attributionControl: false }).setView([48.8566, 2.3522], 12);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map);
-
-    // Fonction de vérification du compte adaptée pour Netlify
-    async function checkAccount() {
-        try {
-            const { data: { session } } = await _supabase.auth.getSession();
+    <main class="max-w-7xl mx-auto px-8 -mt-12 mb-20 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             
-            if (session && session.user) {
-                const { data, error } = await _supabase.from('annonceurs')
-                    .select('offre, nb_ecrans')
-                    .eq('id', session.user.id)
-                    .single();
-                
-                if (data && data.offre) {
-                    document.getElementById('info-profil').innerHTML = 
-                        `Offre : <b class="text-white">${data.offre}</b> | Écrans actifs : <b class="text-white">${data.nb_ecrans}</b>`;
-                }
-            } else {
-                console.log("Aucune session active détectée.");
-            }
-        } catch (err) {
-            console.error("Erreur session:", err);
-        }
-    }
-
-    async function chargerEcrans() {
-        const { data: ecrans, error } = await _supabase.from('ecrans').select('*');
-        if (error) return console.error(error);
-
-        map.eachLayer((layer) => { if (layer instanceof L.Marker) map.removeLayer(layer); });
-
-        ecrans.forEach(ecran => {
-            if (ecran.latitude && ecran.longitude) {
-                const nbrEnBase = parseInt(ecran.spots_libres) || 0;
-                const dejaDansPanier = selected.filter(name => name === ecran.nom_commerce).length;
-                const dispoReelle = nbrEnBase - dejaDansPanier;
-
-                const marker = L.marker([ecran.latitude, ecran.longitude], { opacity: nbrEnBase > 0 ? 1 : 0.6 }).addTo(map);
-                
-                marker.bindPopup(`
-                    <div class="custom-popup">
-                        <h3 style="margin:0; color:#003366; font-weight:900;">${ecran.nom_commerce || "Écran"}</h3>
-                        <p style="margin:8px 0; font-size:13px; color:#64748B;">📍 ${ecran.adresse || ''}</p>
-                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
-                            <span style="font-weight:bold; color:${dispoReelle > 0 ? '#10b981' : '#ef4444'}">
-                                ${dispoReelle > 0 ? `🟢 ${dispoReelle} spots` : '🔴 Complet'}
-                            </span>
-                            ${dispoReelle > 0 ? `
-                                <button onclick="ajouterSpot('${ecran.nom_commerce.replace(/'/g, "\\'")}', ${nbrEnBase})" 
-                                        style="background:#00D1FF; color:white; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; border:none;">
-                                    Ajouter
-                                </button>` : ''}
-                        </div>
-                    </div>`);
-            }
-        });
-    }
-
-    function ajouterSpot(name, max) {
-        const count = selected.filter(item => item === name).length;
-        if (count < max) {
-            selected.push(name);
-            updateUI();
-            chargerEcrans(); 
-        }
-    }
-
-    function retirerUn(name) {
-        const index = selected.indexOf(name);
-        if (index > -1) {
-            selected.splice(index, 1);
-            updateUI();
-            chargerEcrans();
-        }
-    }
-
-    function updateUI() {
-        document.getElementById('selected-count').textContent = `${selected.length} spot${selected.length > 1 ? 's' : ''}`;
-        document.getElementById('count-text').textContent = selected.length;
-        
-        const listEl = document.getElementById('selected-list');
-        if (selected.length === 0) {
-            listEl.innerHTML = '<p class="text-gray-400 text-center py-12">Aucun écran sélectionné</p>';
-        } else {
-            const counts = {};
-            selected.forEach(x => { counts[x] = (counts[x] || 0) + 1; });
-
-            listEl.innerHTML = Object.keys(counts).map(name => `
-                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                    <div class="flex flex-col">
-                        <span class="font-bold text-[#0A2540] text-sm">${name}</span>
-                        <span class="text-[10px] font-black text-cyan-500 uppercase">Qté : ${counts[name]}</span>
-                    </div>
-                    <button onclick="retirerUn('${name.replace(/'/g, "\\")}')" class="text-red-400 hover:text-red-600 font-bold text-xl ml-2">×</button>
+            <div class="lg:col-span-8">
+                <div class="bg-white p-2 rounded-[40px] shadow-2xl shadow-blue-900/5">
+                    <div id="map"></div>
                 </div>
-            `).join('');
+            </div>
+
+            <div class="lg:col-span-4">
+                <div class="bg-white rounded-[40px] shadow-2xl shadow-blue-900/5 p-8 border border-slate-50 sticky top-28">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3 class="font-black text-2xl text-[#003366]">Votre Panier</h3>
+                        <span id="selected-count-badge" class="bg-blue-50 text-blue-600 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest">0 Spot</span>
+                    </div>
+
+                    <div id="selected-list" class="space-y-4 max-h-[350px] overflow-y-auto pr-2 mb-8">
+                        <div class="text-center py-10">
+                            <div class="bg-slate-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+                            </div>
+                            <p class="text-slate-400 font-medium">Aucun écran sélectionné</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-slate-100">
+                        <div class="flex justify-between items-end mb-6">
+                            <span class="text-slate-400 font-bold text-sm uppercase tracking-wider">Total Estimé</span>
+                            <div class="text-right">
+                                <span id="total-price" class="text-3xl font-black text-[#003366]">0€</span>
+                                <p class="text-[10px] text-slate-400 font-bold">HT / MOIS</p>
+                            </div>
+                        </div>
+
+                        <button onclick="continuer()" id="continue-btn" class="btn-gradient disabled w-full py-5 text-white rounded-2xl font-black text-lg shadow-lg">
+                            Confirmer la sélection
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        let selected = [];
+        const SUPABASE_URL = 'https://srfxehetueqazykzwrhw.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZnhlaGV0dWVxYXp5a3p3cmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NjQ4NjksImV4cCI6MjA5MjU0MDg2OX0.tqw6lik68x0js0VVm-xAuLFZ17mFf3LM6h5g85eow68';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Map Initialization avec style Voyager
+        const map = L.map('map', { 
+            scrollWheelZoom: true, 
+            attributionControl: false,
+            zoomControl: false 
+        }).setView([48.8566, 2.3522], 12);
+
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map);
+
+        async function checkAccount() {
+            const { data: { session } } = await _supabase.auth.getSession();
+            if (session?.user) {
+                const { data } = await _supabase.from('annonceurs').select('offre, nb_ecrans').eq('id', session.user.id).single();
+                if (data?.offre) {
+                    document.getElementById('info-profil').innerHTML = 
+                        `Plan actuel : <span class="text-white font-bold">${data.offre}</span> • <span class="text-cyan-200">${data.nb_ecrans} écrans</span>`;
+                }
+            }
         }
-        
-        const btn = document.getElementById('continue-btn');
-        btn.classList.toggle('opacity-50', selected.length === 0);
-        btn.classList.toggle('pointer-events-none', selected.length === 0);
-    }
 
-    async function continuer() {
-        if (selected.length === 0) return;
-        window.location.href = `offre-annonceur.html?ecrans=${selected.length}&prix=${selected.length * 39}`;
-    }
+        async function chargerEcrans() {
+            const { data: ecrans, error } = await _supabase.from('ecrans').select('*');
+            if (error) return;
 
-    window.onload = () => { 
-        chargerEcrans(); 
-        checkAccount(); 
-        setTimeout(() => { map.invalidateSize(); }, 500); 
-    };
-</script>
+            map.eachLayer((layer) => { if (layer instanceof L.Marker) map.removeLayer(layer); });
+
+            ecrans.forEach(ecran => {
+                if (ecran.latitude && ecran.longitude) {
+                    const nbrEnBase = parseInt(ecran.spots_libres) || 0;
+                    const dejaDansPanier = selected.filter(name => name === ecran.nom_commerce).length;
+                    const dispoReelle = nbrEnBase - dejaDansPanier;
+
+                    const marker = L.marker([ecran.latitude, ecran.longitude]).addTo(map);
+                    
+                    marker.bindPopup(`
+                        <div class="p-2 min-w-[200px]">
+                            <p class="text-[10px] font-bold text-blue-500 uppercase tracking-widest mb-1">Commerce Partenaire</p>
+                            <h3 class="font-black text-slate-800 text-lg mb-1 leading-tight">${ecran.nom_commerce}</h3>
+                            <p class="text-slate-400 text-xs mb-4 flex items-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /></svg>
+                                ${ecran.adresse || 'Paris, France'}
+                            </p>
+                            <div class="flex items-center justify-between border-t pt-3 mt-2">
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase">Dispo</span>
+                                    <span class="font-black ${dispoReelle > 0 ? 'text-emerald-500' : 'text-rose-500'}">${dispoReelle} spots</span>
+                                </div>
+                                ${dispoReelle > 0 ? `
+                                    <button onclick="ajouterSpot('${ecran.nom_commerce.replace(/'/g, "\\'")}', ${nbrEnBase})" 
+                                            class="bg-blue-600 text-white px-4 py-2 rounded-xl font-bold text-xs hover:bg-blue-700 transition shadow-lg shadow-blue-200">
+                                        Réserver
+                                    </button>` : `<span class="text-rose-500 font-black text-xs uppercase">Complet</span>`}
+                            </div>
+                        </div>
+                    `);
+                }
+            });
+        }
+
+        function ajouterSpot(name, max) {
+            const count = selected.filter(item => item === name).length;
+            if (count < max) {
+                selected.push(name);
+                updateUI();
+                chargerEcrans(); 
+            }
+        }
+
+        function retirerUn(name) {
+            const index = selected.indexOf(name);
+            if (index > -1) {
+                selected.splice(index, 1);
+                updateUI();
+                chargerEcrans();
+            }
+        }
+
+        function updateUI() {
+            const listEl = document.getElementById('selected-list');
+            const badge = document.getElementById('selected-count-badge');
+            const priceEl = document.getElementById('total-price');
+            const btn = document.getElementById('continue-btn');
+
+            badge.textContent = `${selected.length} Spot${selected.length > 1 ? 's' : ''}`;
+            priceEl.textContent = `${selected.length * 39}€`;
+            
+            if (selected.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-10">
+                        <div class="bg-slate-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+                        </div>
+                        <p class="text-slate-400 font-medium">Aucun écran sélectionné</p>
+                    </div>`;
+                btn.classList.add('disabled');
+            } else {
+                btn.classList.remove('disabled');
+                const counts = {};
+                selected.forEach(x => { counts[x] = (counts[x] || 0) + 1; });
+
+                listEl.innerHTML = Object.keys(counts).map(name => `
+                    <div class="flex items-center justify-between p-4 bg-slate-50/50 rounded-2xl border border-slate-100 group hover:bg-white hover:shadow-md transition-all duration-200">
+                        <div class="flex flex-col">
+                            <span class="font-bold text-slate-800 text-sm">${name}</span>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="bg-cyan-50 text-cyan-600 px-2 py-0.5 rounded text-[10px] font-black uppercase">Quantité : ${counts[name]}</span>
+                                <span class="text-[10px] font-bold text-slate-300">${counts[name] * 39}€</span>
+                            </div>
+                        </div>
+                        <button onclick="retirerUn('${name.replace(/'/g, "\\")}')" class="w-8 h-8 flex items-center justify-center rounded-full bg-rose-50 text-rose-400 hover:bg-rose-500 hover:text-white transition-all font-bold text-lg">×</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function continuer() {
+            if (selected.length === 0) return;
+            window.location.href = `offre-annonceur.html?ecrans=${selected.length}&prix=${selected.length * 39}`;
+        }
+
+        window.onload = () => { 
+            chargerEcrans(); 
+            checkAccount(); 
+            setTimeout(() => { map.invalidateSize(); }, 400); 
+        };
+    </script>
 </body>
 </html>
