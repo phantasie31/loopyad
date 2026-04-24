@@ -9,31 +9,32 @@
     <style>
         :root { --bleu-fonce: #003366; --gris-fond: #F8FAFC; }
         
+        /* On force le body à prendre toute la hauteur pour le centrage */
+        html, body { height: 100%; margin: 0; }
+        
         body { 
             font-family: 'Inter', sans-serif; 
             background: var(--gris-fond); 
-            margin: 0; 
             display: flex; 
             flex-direction: column; 
-            min-height: 100vh; 
         }
         
-        /* ESPACEMENT PRO : On centre et on donne de l'air */
-        .main-content {
-            flex: 1;
+        /* SECTION CENTRALE : C'est ici que la magie opère */
+        .page-content {
+            flex: 1; /* Prend tout l'espace libre */
             display: flex;
-            align-items: center; /* Centre verticalement */
-            justify-content: center; /* Centre horizontalement */
-            padding: 100px 20px; /* Grosses marges haut/bas pour le look épuré */
+            align-items: center; /* Centre verticalement la carte */
+            justify-content: center; /* Centre horizontalement la carte */
+            padding: 40px 20px;
         }
 
         .login-card { 
             background: white; 
-            padding: 48px; /* Plus d'espace interne */
-            border-radius: 32px; 
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); 
+            padding: 45px; 
+            border-radius: 35px; 
+            box-shadow: 0 20px 60px -15px rgba(0, 51, 102, 0.1); 
             width: 100%; 
-            max-width: 460px; 
+            max-width: 480px; 
             text-align: center; 
         }
 
@@ -44,10 +45,10 @@
             padding: 16px; 
             border-radius: 12px; 
             border: 1px solid #E2E8F0; 
-            margin-bottom: 24px; 
+            margin-bottom: 25px; 
             box-sizing: border-box; 
             font-family: inherit; 
-            background-color: #F8FAFC;
+            background: #FDFDFD;
         }
 
         .btn-login { 
@@ -60,9 +61,9 @@
             border: none; 
             cursor: pointer; 
             font-size: 16px;
-            transition: transform 0.2s, background 0.2s;
+            transition: 0.2s;
         }
-        .btn-login:hover { background: #002d5a; transform: translateY(-1px); }
+        .btn-login:hover { background: #002d5a; transform: scale(1.01); }
     </style>
 </head>
 <body>
@@ -70,14 +71,14 @@
     <nav class="flex justify-between items-center py-6 px-20 bg-white border-b border-slate-100">
         <a href="index.html"><img src="https://i.ibb.co/SHgMNn6/loppyad4.png" class="h-[38px]" alt="LoopyAd"></a>
         <div class="flex items-center gap-6">
-            <a href="Login.html" class="text-[14px] font-bold text-slate-600 hover:text-black transition">Connexion</a>
+            <a href="Login.html" class="text-[14px] font-bold text-slate-800">Connexion</a>
             <a href="choix-inscription.html" class="text-[14px] font-bold bg-black text-white px-6 py-3 rounded-full hover:bg-zinc-800 transition">Inscription</a>
         </div>
     </nav>
 
-    <div class="main-content">
+    <div class="page-content">
         <div class="login-card">
-            <h1 class="text-[32px] font-black text-[#003366] mb-3 tracking-tight">Bon retour !</h1>
+            <h1 class="text-[32px] font-black text-[#003366] mb-3 tracking-tighter">Bon retour !</h1>
             <p id="form-subtitle" class="text-slate-400 text-[16px] mb-10">Connectez-vous à votre espace Annonceur</p>
             
             <div class="flex bg-slate-100 p-1.5 rounded-2xl mb-10">
