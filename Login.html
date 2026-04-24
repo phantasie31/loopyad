@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Connexion — LoopyAd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
@@ -166,7 +167,6 @@
     <div id="universal-footer"></div>
 
     <script>
-        // CONFIGURATION SUPABASE
         const SUPABASE_URL = 'https://srfxehetueqazykzwrhw.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZnhlaGV0dWVxYXp5a3p3cmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NjQ4NjksImV4cCI6MjA5MjU0MDg2OX0.tqw6lik68x0js0VVm-xAuLFZ17mFf3LM6h5g85eow68';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -178,9 +178,7 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             if(type === 'annonceur') document.getElementById('btn-annonceur').classList.add('active');
             else document.getElementById('btn-hote').classList.add('active');
-            
             document.getElementById('form-subtitle').textContent = `Connectez-vous à votre espace ${type.charAt(0).toUpperCase() + type.slice(1)}`;
-            document.getElementById('error-box').style.display = 'none';
         }
 
         async function handleLogin() {
@@ -197,7 +195,6 @@
 
             btn.innerText = "Vérification...";
             btn.disabled = true;
-            errorBox.style.display = 'none';
 
             const tableName = (currentType === 'annonceur') ? 'annonceurs' : 'ecrans';
 
@@ -210,7 +207,7 @@
                     .single();
 
                 if (error || !data) {
-                    errorBox.textContent = "Email ou mot de passe incorrect pour un compte " + currentType + ".";
+                    errorBox.textContent = "Email ou mot de passe incorrect.";
                     errorBox.style.display = 'block';
                     btn.innerText = "Se connecter";
                     btn.disabled = false;
@@ -220,16 +217,14 @@
                     window.location.href = (currentType === 'annonceur') ? 'dashboard-annonceur.html' : 'dashboard-hote.html';
                 }
             } catch (err) {
-                errorBox.textContent = "Erreur de connexion au serveur.";
                 errorBox.style.display = 'block';
                 btn.innerText = "Se connecter";
                 btn.disabled = false;
             }
         }
 
-        // GESTION DU FOOTER ET DE LA SESSION
-        async function init() {
-            // Injection du footer
+        // LE MÊME FOOTER ET LA MÊME LOGIQUE POUR TOUT LE MONDE
+        function injectFooter() {
             const footerContainer = document.getElementById('universal-footer');
             if (footerContainer) {
                 footerContainer.innerHTML = `
@@ -242,23 +237,37 @@
                     </div>
                     <div class="max-w-7xl mx-auto px-8 mt-4 pt-4 border-t border-slate-800 text-[10px] text-center">
                         <div class="flex justify-center gap-x-6 mb-4">
-                            <a href="politique-confidentialite.html" class="hover:text-white">Politique de confidentialité</a>
-                            <a href="conditions-utilisation.html" class="hover:text-white">Conditions d'utilisation</a>
+                            <a href="politique-confidentialite.html" class="hover:text-white">Confidentialité</a>
+                            <a href="conditions-utilisation.html" class="hover:text-white">Conditions</a>
                             <a href="support.html" class="hover:text-white font-bold text-cyan-400">Support</a>
                         </div>
                         <div class="opacity-50">© 2026 LoopyAd — Marketplace DOOH hyperlocale.</div>
+                        <div class="flex justify-center gap-4 mt-2 opacity-50">
+                            <a href="admin-login.html" class="hover:text-white">Espace Admin</a>
+                            <a href="commercial-login.html" class="hover:text-white">Espace Commerciaux</a>
+                        </div>
                     </div>
                 </footer>`;
             }
+        }
 
-            // Vérification session (si déjà connecté, on peut rediriger ou adapter)
+        async function handleAuthVisuals() {
             const { data: { session } } = await _supabase.auth.getSession();
+            const authBtn = document.getElementById('auth-button');
+            const signupBtn = document.getElementById('signup-button');
+
             if (session) {
-                // Optionnel : Rediriger vers check-profile si déjà connecté
-                // window.location.href = 'check-profile.html';
+                if (authBtn) {
+                    authBtn.style.display = 'block';
+                    authBtn.innerText = 'Mon Dashboard';
+                    authBtn.href = 'check-profile.html';
+                }
+                if (signupBtn) signupBtn.style.display = 'none';
             }
         }
-        init();
+
+        injectFooter();
+        handleAuthVisuals();
     </script>
 </body>
 </html>
