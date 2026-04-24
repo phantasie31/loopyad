@@ -10,7 +10,6 @@
         :root { --bleu-fonce: #003366; --gris-fond: #F8FAFC; }
         body { font-family: 'Inter', sans-serif; background: var(--gris-fond); margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
         
-        /* Design du formulaire strictement identique à ton original */
         .login-card { background: white; padding: 40px; border-radius: 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); width: 100%; max-width: 450px; text-align: center; }
         label { display: block; text-align: left; font-weight: 700; font-size: 13px; margin-bottom: 8px; color: #334155; }
         input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid #E2E8F0; margin-bottom: 20px; box-sizing: border-box; font-family: inherit; }
@@ -51,46 +50,21 @@
         </div>
     </div>
 
-    <footer class="bg-[#0A2540] text-slate-400 py-12">
-        <div class="max-w-7xl mx-auto px-8 grid md:grid-cols-4 gap-12 text-left">
-            <div>
-                <h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Commerce hôte</h4>
-                <a href="hote.html" class="block hover:text-white mb-2 text-sm transition">Recevoir un écran gratuit</a>
-            </div>
-            <div>
-                <h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Annonceur</h4>
-                <a href="inscription-annonceur.html" class="block hover:text-white mb-2 text-sm transition">Lancer une campagne</a>
-            </div>
-            <div>
-                <h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Application</h4>
-                <div class="flex gap-3 mt-2">
-                    <a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" class="h-9"></a>
-                    <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" class="h-9"></a>
-                </div>
-            </div>
-            <div>
-                <h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Entreprise</h4>
-                <a href="#" class="block hover:text-white mb-2 text-sm transition">À propos</a>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto px-8 mt-12 pt-8 border-t border-slate-800 text-[11px] text-center">
-            <div class="flex justify-center gap-x-8 mb-6">
-                <a href="politique-confidentialite.html" class="hover:text-white transition">Politique de confidentialité</a>
-                <a href="conditions-utilisation.html" class="hover:text-white transition">Conditions d'utilisation</a>
-                <a href="support.html" class="text-cyan-400 font-bold hover:text-cyan-300 transition">Support</a>
-            </div>
-            <div class="opacity-50">© 2026 LoopyAd — Marketplace DOOH hyperlocale.</div>
-            <div class="flex justify-center gap-6 mt-4 opacity-40">
-                <a href="admin-login.html" class="hover:text-white transition text-[10px]">Espace Admin</a>
-                <a href="commercial-login.html" class="hover:text-white transition text-[10px]">Espace Commerciaux</a>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script>
+        // Configuration Supabase
         const SUPABASE_URL = 'https://srfxehetueqazykzwrhw.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZnhlaGV0dWVxYXp5a3p3cmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NjQ4NjksImV4cCI6MjA5MjU0MDg2OX0.tqw6lik68x0js0VVm-xAuLFZ17mFf3LM6h5g85eow68';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Script d'injection du footer
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            })
+            .catch(err => console.error("Erreur lors du chargement du footer:", err));
 
         function switchTab(type) {
             const btnA = document.getElementById('btn-annonceur');
