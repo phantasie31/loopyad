@@ -129,6 +129,10 @@
         <a href="index.html">
             <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" class="logo" alt="LoopyAd">
         </a>
+        <div style="display: flex; gap: 15px;">
+            <a id="auth-button" href="Login.html" style="display:none;">Connexion</a>
+            <a id="signup-button" href="choix-inscription.html" style="display:none;">Inscription</a>
+        </div>
     </nav>
 
     <div class="main-container">
@@ -158,6 +162,8 @@
             </div>
         </div>
     </div>
+
+    <div id="universal-footer"></div>
 
     <script>
         // CONFIGURATION SUPABASE
@@ -193,7 +199,6 @@
             btn.disabled = true;
             errorBox.style.display = 'none';
 
-            // On choisit la table selon l'onglet actif
             const tableName = (currentType === 'annonceur') ? 'annonceurs' : 'ecrans';
 
             try {
@@ -210,11 +215,8 @@
                     btn.innerText = "Se connecter";
                     btn.disabled = false;
                 } else {
-                    // Succès : on mémorise l'utilisateur
                     localStorage.setItem('userEmail', email);
                     localStorage.setItem('userRole', currentType);
-                    
-                    // Redirection
                     window.location.href = (currentType === 'annonceur') ? 'dashboard-annonceur.html' : 'dashboard-hote.html';
                 }
             } catch (err) {
@@ -224,6 +226,39 @@
                 btn.disabled = false;
             }
         }
+
+        // GESTION DU FOOTER ET DE LA SESSION
+        async function init() {
+            // Injection du footer
+            const footerContainer = document.getElementById('universal-footer');
+            if (footerContainer) {
+                footerContainer.innerHTML = `
+                <footer class="bg-[#0A2540] text-slate-400 py-4">
+                    <div class="max-w-7xl mx-auto px-8 grid md:grid-cols-4 gap-12 text-left">
+                        <div><h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Commerce hôte</h4><a href="hote.html" class="block hover:text-white mb-2 text-sm">Recevoir un écran gratuit</a></div>
+                        <div><h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Annonceur</h4><a href="inscription-annonceur.html" class="block hover:text-white mb-2 text-sm">Lancer une campagne</a></div>
+                        <div><h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Application</h4><div class="flex gap-3 mt-2"><a href="#"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" style="height:35px;"></a></div></div>
+                        <div><h4 class="text-white font-black text-sm uppercase mb-6 tracking-widest">Entreprise</h4><a href="#" class="block hover:text-white mb-2 text-sm">À propos</a></div>
+                    </div>
+                    <div class="max-w-7xl mx-auto px-8 mt-4 pt-4 border-t border-slate-800 text-[10px] text-center">
+                        <div class="flex justify-center gap-x-6 mb-4">
+                            <a href="politique-confidentialite.html" class="hover:text-white">Politique de confidentialité</a>
+                            <a href="conditions-utilisation.html" class="hover:text-white">Conditions d'utilisation</a>
+                            <a href="support.html" class="hover:text-white font-bold text-cyan-400">Support</a>
+                        </div>
+                        <div class="opacity-50">© 2026 LoopyAd — Marketplace DOOH hyperlocale.</div>
+                    </div>
+                </footer>`;
+            }
+
+            // Vérification session (si déjà connecté, on peut rediriger ou adapter)
+            const { data: { session } } = await _supabase.auth.getSession();
+            if (session) {
+                // Optionnel : Rediriger vers check-profile si déjà connecté
+                // window.location.href = 'check-profile.html';
+            }
+        }
+        init();
     </script>
 </body>
 </html>
