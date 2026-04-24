@@ -1,1 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoopyAd - Choisissez vos écrans</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+    <style>
+        body { font-family: 'Inter', system_ui, sans-serif; }
+        .hero-bg { background: linear-gradient(135deg, #00D4FF 0%, #0A2540 100%); }
+        #map { height: 520px; width: 100%; border-radius: 24px; border: 3px solid #0A2540; z-index: 1; background: #e5e7eb; }
+        .custom-popup .leaflet-popup-content-wrapper { border-radius: 15px; padding: 5px; font-family: 'Inter', sans-serif; }
+        nav { padding: 0 80px !important; height: 76px !important; }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+<nav class="bg-white border-b sticky top-0 z-50 flex items-center justify-between">
+    <a href="index.html" class="flex items-center">
+        <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" alt="LoopyAd" style="height: 35px;">
+    </a>
+    <div class="flex items-center gap-6">
+        <a href="index.html" class="text-[13px] font-bold text-slate-500 hover:text-slate-800 transition">← Retour à l'accueil</a>
+    </div>
+</nav>
+
+<div class="hero-bg text-white py-16">
+    <div class="max-w-5xl mx-auto px-8 text-center">
+        <h1 class="text-5xl font-black leading-tight mb-4 tracking-tighter">Choisissez vos écrans</h1>
+        <p id="info-profil" class="text-xl text-cyan-100 opacity-90 italic">Cumulez plusieurs spots sur les mêmes écrans si vous le souhaitez</p>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-8 py-10">
+    <div class="flex flex-col lg:flex-row gap-10">
+        <div class="flex-1">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-black text-[#003366] tracking-tight">Carte des écrans</h2>
+                <div id="selected-count" class="bg-white px-5 py-2 rounded-2xl font-bold text-slate-600 shadow-sm border border-slate-100">0 spot sélectionné</div>
+            </div>
+            <div id="map"></div>
+        </div>
+
+        <div class="lg:w-96 bg-white rounded-3xl shadow-xl p-8 h-fit sticky top-24 border border-slate-100">
+            <h3 class="font-black text-[#003366] text-xl mb-6">Votre sélection</h3>
+            <div id="selected-list" class="space-y-4 min-h-[280px]">
+                <p class="text-gray-400 text-center py-12">Aucun écran sélectionné</p>
+            </div>
+
+            <div onclick="continuer()" id="continue-btn" 
+                 class="mt-8 w-full py-5 bg-gradient-to-r from-[#00D4FF] to-[#0A2540] text-white text-center rounded-2xl font-black text-lg cursor-pointer opacity-50 pointer-events-none transition-all hover:scale-[1.02]">
+                Continuer avec <span id="count-text">0</span> spot(s)
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let selected = [];
+    const SUPABASE_URL = 'https://srfxehetueqazykzwrhw.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZnhlaGV0dWVxYXp5a3p3cmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NjQ4NjksImV4cCI6MjA5MjU0MDg2OX0.tqw6lik68x0js0VVm-xAuLFZ17mFf3LM6h5g85eow68';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const map = L.map('map', { scrollWheelZoom: false, attributionControl: false }).setView([48.8566, 2.3522], 12);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map);
+
+    // Fonction de vérification du compte adaptée pour Netlify
+    async function checkAccount() {
+        try {
+            const { data: { session } } = await _supabase.auth.getSession();
+            
+            if (session && session.user) {
+                const { data, error } = await _supabase.from('annonceurs')
+                    .select('offre, nb_ecrans')
+                    .eq('id', session.user.id)
+                    .single();
+                
+                if (data && data.offre) {
+                    document.getElementById('info-profil').innerHTML = 
+                        `Offre : <b class="text-white">${data.offre}</b> | Écrans actifs : <b class="text-white">${data.nb_ecrans}</b>`;
+                }
+            } else {
+                console.log("Aucune session active détectée.");
+            }
+        } catch (err) {
+            console.error("Erreur session:", err);
+        }
+    }
+
+    async function chargerEcrans() {
+        const { data: ecrans, error } = await _supabase.from('ecrans').select('*');
+        if (error) return console.error(error);
+
+        map.eachLayer((layer) => { if (layer instanceof L.Marker) map.removeLayer(layer); });
+
+        ecrans.forEach(ecran => {
+            if (ecran.latitude && ecran.longitude) {
+                const nbrEnBase = parseInt(ecran.spots_libres) || 0;
+                const dejaDansPanier = selected.filter(name => name === ecran.nom_commerce).length;
+                const dispoReelle = nbrEnBase - dejaDansPanier;
+
+                const marker = L.marker([ecran.latitude, ecran.longitude], { opacity: nbrEnBase > 0 ? 1 : 0.6 }).addTo(map);
+                
+                marker.bindPopup(`
+                    <div class="custom-popup">
+                        <h3 style="margin:0; color:#003366; font-weight:900;">${ecran.nom_commerce || "Écran"}</h3>
+                        <p style="margin:8px 0; font-size:13px; color:#64748B;">📍 ${ecran.adresse || ''}</p>
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                            <span style="font-weight:bold; color:${dispoReelle > 0 ? '#10b981' : '#ef4444'}">
+                                ${dispoReelle > 0 ? `🟢 ${dispoReelle} spots` : '🔴 Complet'}
+                            </span>
+                            ${dispoReelle > 0 ? `
+                                <button onclick="ajouterSpot('${ecran.nom_commerce.replace(/'/g, "\\'")}', ${nbrEnBase})" 
+                                        style="background:#00D1FF; color:white; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; border:none;">
+                                    Ajouter
+                                </button>` : ''}
+                        </div>
+                    </div>`);
+            }
+        });
+    }
+
+    function ajouterSpot(name, max) {
+        const count = selected.filter(item => item === name).length;
+        if (count < max) {
+            selected.push(name);
+            updateUI();
+            chargerEcrans(); 
+        }
+    }
+
+    function retirerUn(name) {
+        const index = selected.indexOf(name);
+        if (index > -1) {
+            selected.splice(index, 1);
+            updateUI();
+            chargerEcrans();
+        }
+    }
+
+    function updateUI() {
+        document.getElementById('selected-count').textContent = `${selected.length} spot${selected.length > 1 ? 's' : ''}`;
+        document.getElementById('count-text').textContent = selected.length;
+        
+        const listEl = document.getElementById('selected-list');
+        if (selected.length === 0) {
+            listEl.innerHTML = '<p class="text-gray-400 text-center py-12">Aucun écran sélectionné</p>';
+        } else {
+            const counts = {};
+            selected.forEach(x => { counts[x] = (counts[x] || 0) + 1; });
+
+            listEl.innerHTML = Object.keys(counts).map(name => `
+                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <div class="flex flex-col">
+                        <span class="font-bold text-[#0A2540] text-sm">${name}</span>
+                        <span class="text-[10px] font-black text-cyan-500 uppercase">Qté : ${counts[name]}</span>
+                    </div>
+                    <button onclick="retirerUn('${name.replace(/'/g, "\\")}')" class="text-red-400 hover:text-red-600 font-bold text-xl ml-2">×</button>
+                </div>
+            `).join('');
+        }
+        
+        const btn = document.getElementById('continue-btn');
+        btn.classList.toggle('opacity-50', selected.length === 0);
+        btn.classList.toggle('pointer-events-none', selected.length === 0);
+    }
+
+    async function continuer() {
+        if (selected.length === 0) return;
+        window.location.href = `offre-annonceur.html?ecrans=${selected.length}&prix=${selected.length * 39}`;
+    }
+
+    window.onload = () => { 
+        chargerEcrans(); 
+        checkAccount(); 
+        setTimeout(() => { map.invalidateSize(); }, 500); 
+    };
+</script>
+</body>
+</html>
