@@ -8,27 +8,76 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root { --bleu-fonce: #003366; --gris-fond: #F8FAFC; }
-        body { font-family: 'Inter', sans-serif; background: var(--gris-fond); margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
         
-        .login-card { background: white; padding: 40px; border-radius: 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); width: 100%; max-width: 450px; text-align: center; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--gris-fond); 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+        }
+        
+        /* Ajustement du conteneur pour que la carte soit bien placée */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px; /* Espace équilibré en haut et en bas */
+        }
+
+        .login-card { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 32px; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); 
+            width: 100%; 
+            max-width: 450px; 
+            text-align: center; 
+        }
+
         label { display: block; text-align: left; font-weight: 700; font-size: 13px; margin-bottom: 8px; color: #334155; }
-        input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid #E2E8F0; margin-bottom: 20px; box-sizing: border-box; font-family: inherit; }
-        .btn-login { width: 100%; background: var(--bleu-fonce); color: white; padding: 16px; border-radius: 14px; font-weight: 800; border: none; cursor: pointer; }
+        
+        input { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border-radius: 12px; 
+            border: 1px solid #E2E8F0; 
+            margin-bottom: 20px; 
+            box-sizing: border-box; 
+            font-family: inherit; 
+        }
+
+        .btn-login { 
+            width: 100%; 
+            background: var(--bleu-fonce); 
+            color: white; 
+            padding: 16px; 
+            border-radius: 14px; 
+            font-weight: 800; 
+            border: none; 
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+        .btn-login:hover { background: #002244; transform: translateY(-1px); }
     </style>
 </head>
 <body>
 
     <nav class="flex justify-between items-center py-5 px-20 bg-white border-b border-slate-200">
-        <a href="index.html"><img src="https://i.ibb.co/SHgMNn6/loppyad4.png" class="h-[35px]" alt="LoopyAd"></a>
+        <a href="index.html">
+            <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" class="h-[35px]" alt="LoopyAd">
+        </a>
         <div class="flex items-center gap-4">
             <a id="auth-button" href="Login.html" class="text-[14px] font-bold text-slate-800 px-4 py-2">Connexion</a>
             <a id="signup-button" href="choix-inscription.html" class="text-[14px] font-bold bg-black text-white px-5 py-2.5 rounded-full">Inscription</a>
         </div>
     </nav>
 
-    <div class="flex-grow flex items-center justify-center py-10 px-4">
+    <div class="main-wrapper">
         <div class="login-card">
-            <h1 class="text-[28px] font-black text-[#003366] mb-2">Bon retour !</h1>
+            <h1 class="text-[28px] font-black text-[#003366] mb-2 tracking-tight">Bon retour !</h1>
             <p id="form-subtitle" class="text-slate-500 text-[15px] mb-8">Connectez-vous à votre espace Annonceur</p>
             
             <div class="flex bg-slate-100 p-1 rounded-xl mb-8">
@@ -39,13 +88,15 @@
             <form id="login-form">
                 <label>Adresse Email</label>
                 <input type="email" id="email" placeholder="nom@exemple.com" required>
+                
                 <label>Mot de passe</label>
                 <input type="password" id="password" placeholder="••••••••" required>
-                <button type="button" id="btn-submit" onclick="handleLogin()" class="btn-login hover:opacity-90 transition">Se connecter</button>
+                
+                <button type="button" id="btn-submit" onclick="handleLogin()" class="btn-login">Se connecter</button>
             </form>
 
             <div class="mt-8 text-[13px] text-slate-500">
-                Pas encore de compte ? <a href="choix-inscription.html" class="text-[#003366] font-bold">S'inscrire</a>
+                Pas encore de compte ? <a href="choix-inscription.html" class="text-[#003366] font-bold hover:underline">S'inscrire</a>
             </div>
         </div>
     </div>
@@ -53,18 +104,16 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        // Configuration Supabase
         const SUPABASE_URL = 'https://srfxehetueqazykzwrhw.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZnhlaGV0dWVxYXp5a3p3cmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NjQ4NjksImV4cCI6MjA5MjU0MDg2OX0.tqw6lik68x0js0VVm-xAuLFZ17mFf3LM6h5g85eow68';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Script d'injection du footer
+        // Injection du footer (méthode pro)
         fetch('footer.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('footer-placeholder').innerHTML = data;
-            })
-            .catch(err => console.error("Erreur lors du chargement du footer:", err));
+            });
 
         function switchTab(type) {
             const btnA = document.getElementById('btn-annonceur');
