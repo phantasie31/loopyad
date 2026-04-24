@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Politique de Confidentialité - LoopyAd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bleu-fonce: #003366;
+            --bleu-cyan: #00D1FF;
+            --gris-fond: #F8FAFC;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: white; color: #1e293b; scroll-behavior: smooth; }
+        
+        nav { padding: 0 40px !important; height: 76px !important; background: white; border-bottom: 1px solid #E2E8F0; position: sticky; top: 0; z-index: 50; }
+        
+        .sidebar { position: sticky; top: 120px; height: fit-content; }
+        .sidebar-link { border-left: 2px solid #E2E8F0; transition: all 0.2s; padding-left: 1rem; display: block; padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .sidebar-link:hover { border-left-color: var(--bleu-cyan); color: var(--bleu-cyan); }
+
+        section { padding-top: 40px; margin-bottom: 20px; border-bottom: 1px solid #F1F5F9; padding-bottom: 40px; }
+        h2 { color: var(--bleu-fonce); font-weight: 800; font-size: 1.5rem; margin-bottom: 1.5rem; }
+        h3 { color: var(--bleu-fonce); font-weight: 700; font-size: 1.1rem; margin-top: 2rem; margin-bottom: 1rem; }
+        p { line-height: 1.7; margin-bottom: 1.2rem; font-size: 0.95rem; color: #475569; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 0.85rem; background: white; }
+        th { background: #F8FAFC; color: var(--bleu-fonce); font-weight: 800; text-align: left; padding: 12px; border: 1px solid #E2E8F0; }
+        td { padding: 12px; border: 1px solid #E2E8F0; vertical-align: top; line-height: 1.5; }
+        
+        strong { color: var(--bleu-fonce); font-weight: 700; }
+        .highlight-box { background: #F0F9FF; border-left: 4px solid var(--bleu-cyan); padding: 25px; border-radius: 0 12px 12px 0; margin: 25px 0; }
+        
+        ul { list-style-type: none; padding: 0; }
+        li { margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative; font-size: 0.95rem; color: #475569; line-height: 1.6; }
+        li::before { content: "•"; color: var(--bleu-cyan); font-weight: bold; position: absolute; left: 0; }
+    </style>
+</head>
+<body>
+
+<nav class="flex items-center justify-between">
+    <div class="flex items-center gap-12">
+        <a href="index.html">
+            <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" alt="LoopyAd" style="height: 35px;">
+        </a>
+        <div class="hidden md:flex items-center gap-8 text-[13px] font-bold text-slate-500">
+            <a href="index.html#comment-ca-marche" class="hover:text-slate-800 transition">Comment ça marche</a>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-4">
+        <a href="login.html" class="text-[14px] font-bold text-slate-800 hover:bg-slate-50 px-4 py-2 rounded-full transition">Connexion</a>
+        <a href="choix-inscription.html" class="text-[14px] font-bold bg-black text-white px-5 py-2.5 rounded-full hover:bg-zinc-800 transition">Inscription</a>
+        <div class="h-6 w-[1px] bg-slate-200 mx-2"></div>
+        <a href="inscription-annonceur.html" 
+           class="px-6 py-2.5 text-[13px] font-bold text-white rounded-xl transition shadow-lg shadow-cyan-500/20"
+           style="background: linear-gradient(135deg, #00D4FF 0%, #0A2540 100%);">
+            Lancer une campagne
+        </a>
+    </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-8 py-16 flex gap-16">
+    
+    <aside class="hidden lg:block w-64 sidebar">
+        <h4 class="text-xs font-black uppercase tracking-[2px] text-slate-400 mb-6">Sommaire</h4>
+        <div class="flex flex-col gap-2 text-sm font-medium text-slate-500">
+            <a href="#def" class="sidebar-link">1. Définitions</a>
+            <a href="#resp" class="sidebar-link">2. Responsable du traitement</a>
+            <a href="#coll" class="sidebar-link">3. Données personnelles collectées</a>
+            <a href="#util" class="sidebar-link">4. Utilisation des données personnelles</a>
+            <a href="#part" class="sidebar-link">5. Partage des données personnelles</a>
+            <a href="#droit" class="sidebar-link">6. Vos droits</a>
+            <a href="#cons" class="sidebar-link">7. Durées de conservation</a>
+            <a href="#secu" class="sidebar-link">8. Sécurité des données</a>
+            <a href="#cook" class="sidebar-link">9. Cookies et traceurs</a>
+            <a href="#mod" class="sidebar-link">10. Modifications de la présente politique</a>
+            <a href="#cont" class="sidebar-link">11. Nous contacter</a>
+        </div>
+    </aside>
+
+    <div class="flex-1 max-w-3xl">
+        <header class="mb-12">
+            <h1 class="text-5xl font-black text-[#003366] mb-6 tracking-tighter leading-tight">Politique de confidentialité</h1>
+            <div class="flex flex-wrap gap-4 text-[11px] font-bold uppercase tracking-widest text-slate-400 border-b pb-8">
+                <span>Dernière mise à jour : 23 avril 2026</span>
+                <span class="text-cyan-500">•</span>
+                <span>Applicable à : LoopyAd, Espagne & France</span>
+                <span class="text-cyan-500">•</span>
+                <span>Règlement : RGPD (UE) 2016/679</span>
+            </div>
+        </header>
+
+        <p>LoopyAd est une marketplace de publicité hyperlocale qui met en relation des <strong>commerces hôtes</strong> (bars, cliniques, coiffeurs, salles de sport, etc.) qui accueillent nos écrans, et des <strong>annonceurs</strong> (entreprises locales) qui diffusent leurs publicités sur ces écrans. La présente politique décrit, de manière transparente et complète, comment nous collectons, utilisons et protégeons vos données personnelles, conformément au Règlement général sur la protection des données (RGPD) et à la législation espagnole et française applicable.</p>
+
+        <section id="def">
+            <h2>1. Définitions</h2>
+            <p>Dans la présente politique, les termes suivants ont la signification indiquée ci-dessous :</p>
+            <p><strong>« LoopyAd » ou « nous »</strong> désigne la société exploitant la plateforme LoopyAd, responsable du traitement de vos données personnelles.</p>
+            <p><strong>« Plateforme »</strong> désigne le site web loopyad.com, l'application mobile LoopyAd et l'ensemble des services associés.</p>
+            <p><strong>« Commerce hôte »</strong> désigne tout établissement commercial (bar, cabinet médical, coiffeur, pharmacie, salle de sport, etc.) qui accepte d'accueillir un écran LoopyAd dans ses locaux.</p>
+            <p><strong>« Annonceur »</strong> désigne toute entreprise ou professionnel qui achète des spots publicitaires sur le réseau d'écrans LoopyAd.</p>
+            <p><strong>« Données personnelles »</strong> désigne toute information permettant d'identifier directement ou indirectement une personne physique.</p>
+            <p><strong>« Traitement »</strong> désigne toute opération appliquée aux données personnelles (collecte, enregistrement, utilisation, communication, etc.).</p>
+            <p><strong>« RGPD »</strong> désigne le Règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016 relatif à la protection des personnes physiques à l'égard du traitement des données à caractère personnel.</p>
+        </section>
+
+        <section id="resp">
+            <h2>2. Responsable du traitement</h2>
+            <p>Le responsable du traitement de vos données personnelles est :</p>
+            <div class="highlight-box">
+                <p><strong>LoopyAd</strong><br>
+                Adresse : [À compléter — siège social]<br>
+                Email : privacy@loopyad.com<br>
+                Téléphone : [À compléter]</p>
+            </div>
+            <p>En tant que responsable du traitement, LoopyAd détermine les finalités et les moyens du traitement de vos données personnelles, et s'engage à les traiter conformément au RGPD et aux réglementations nationales applicables.</p>
+        </section>
+
+        <section id="coll">
+            <h2>3. Données personnelles collectées</h2>
+            <p>Nous collectons uniquement les données nécessaires au fonctionnement de la plateforme. Voici les catégories de données traitées selon votre profil :</p>
+            <h3>3.1 Données communes à tous les utilisateurs</h3>
+            <ul>
+                <li>Informations d'identité : nom, prénom, adresse email, numéro de téléphone.</li>
+                <li>Données de connexion : identifiant, mot de passe chiffré, historique de connexion.</li>
+                <li>Données de navigation : adresse IP, type de navigateur, pages consultées, durée des sessions.</li>
+                <li>Communications : messages échangés via la plateforme, tickets de support.</li>
+            </ul>
+            <h3>3.2 Données spécifiques aux commerces hôtes</h3>
+            <ul>
+                <li>Informations du commerce : nom de l'établissement, adresse postale complète, type de commerce, fréquentation estimée.</li>
+                <li>Données bancaires : IBAN pour le versement des revenus mensuels (25 % du chiffre d'affaires publicitaire).</li>
+                <li>Données de l'écran : identifiant de l'écran, statut de connexion (en ligne / hors ligne), heures d'allumage, contenu diffusé.</li>
+                <li>Contenus publiés : visuels et promotions uploadés par l'hôte sur ses slots personnels.</li>
+            </ul>
+            <h3>3.3 Données spécifiques aux annonceurs</h3>
+            <ul>
+                <li>Informations de l'entreprise : raison sociale, numéro SIREN/NIF, adresse, secteur d'activité.</li>
+                <li>Données de paiement : informations de carte bancaire traitées exclusivement par notre prestataire Stripe (PCI DSS niveau 1) — LoopyAd ne stocke jamais les données de carte.</li>
+                <li>Données de campagne : écrans sélectionnés, visuels publicitaires, durée et paramètres de diffusion.</li>
+                <li>Données de facturation : montants, dates de transaction, factures émises.</li>
+            </ul>
+            <h3>3.4 Données collectées automatiquement</h3>
+            <ul>
+                <li>Données techniques des écrans : pings de connexion toutes les 60 secondes, logs de diffusion, données de synchronisation du contenu.</li>
+                <li>Cookies et traceurs : voir la section 9 (Cookies) pour le détail complet.</li>
+                <li>Données d'utilisation de l'application : actions effectuées dans l'app, clics, durées.</li>
+            </ul>
+        </section>
+
+        <section id="util">
+            <h2>4. Utilisation des données personnelles</h2>
+            <p>Nous traitons vos données personnelles pour les finalités suivantes, chacune reposant sur une base légale identifiée conformément à l'article 6 du RGPD :</p>
+            <table>
+                <thead>
+                    <tr><th>Finalité</th><th>Base légale</th><th>Détail</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Fournir et gérer la plateforme</td><td>Exécution du contrat</td><td>Création de compte, gestion des écrans, diffusion des publicités, versement des revenus aux hôtes.</td></tr>
+                    <tr><td>Traitement des paiements</td><td>Exécution du contrat</td><td>Facturation des annonceurs, virement des commissions aux hôtes, émission des factures.</td></tr>
+                    <tr><td>Monitoring des écrans en temps réel</td><td>Exécution du contrat</td><td>Suivi du statut (en ligne / hors ligne), heures d'allumage, synchronisation du contenu toutes les 60 secondes.</td></tr>
+                    <tr><td>Support client</td><td>Intérêt légitime</td><td>Réponse aux demandes d'assistance, résolution des incidents techniques.</td></tr>
+                    <tr><td>Amélioration de la plateforme</td><td>Intérêt légitime</td><td>Analyse des usages anonymisés pour améliorer l'expérience utilisateur et les fonctionnalités.</td></tr>
+                    <tr><td>Communication marketing</td><td>Consentement</td><td>Envoi de newsletters, offres promotionnelles, nouvelles fonctionnalités. Désinscription possible à tout moment.</td></tr>
+                    <tr><td>Prévention de la fraude et sécurité</td><td>Intérêt légitime / Obligation légale</td><td>Détection des comportements anormaux, protection de l'intégrité du réseau.</td></tr>
+                    <tr><td>Obligations comptables et fiscales</td><td>Obligation légale</td><td>Conservation des données de facturation conformément aux obligations légales (10 ans en France et en Espagne).</td></tr>
+                    <tr><td>Programme de parrainage</td><td>Exécution du contrat</td><td>Suivi des parrainages, calcul et versement des bonus de 50 € par hôte parrainé actif.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="part">
+            <h2>5. Partage des données personnelles</h2>
+            <p>LoopyAd ne vend jamais vos données personnelles à des tiers. Nous les partageons uniquement dans les cas suivants :</p>
+            <h3>5.1 Prestataires techniques</h3>
+            <ul>
+                <li><strong>Yodeck</strong> (gestion des écrans) : identifiant de l'écran, statut de connexion, contenu à diffuser. Hébergement en Europe.</li>
+                <li><strong>Stripe</strong> (paiements) : données de transaction des annonceurs. Certifié PCI DSS niveau 1. LoopyAd ne stocke aucune donnée de carte bancaire.</li>
+                <li><strong>Firebase / Google Cloud</strong> (hébergement et base de données) : données de compte, contenus, logs. Données hébergées dans l'UE.</li>
+                <li><strong>Twilio</strong> (notifications SMS/WhatsApp) : numéro de téléphone des hôtes pour les alertes opérationnelles.</li>
+            </ul>
+            <p>Tous ces prestataires sont soumis à des contrats de traitement de données (DPA) conformes au RGPD et sont contractuellement tenus de protéger vos données.</p>
+            <h3>5.2 Entre hôtes et annonceurs</h3>
+            <p>Les annonceurs voient uniquement le nom et le type du commerce hôte, sa localisation approximative et son niveau de trafic estimé — jamais les données personnelles du gérant de l'établissement. Les hôtes voient uniquement le nom de l'entreprise annonceur et la catégorie de son activité.</p>
+            <h3>5.3 Autorités légales</h3>
+            <p>Nous pouvons communiquer vos données aux autorités judiciaires, fiscales ou administratives compétentes lorsque la loi nous y oblige ou en cas d'exigence légale valide.</p>
+            <h3>5.4 Cession d'activité</h3>
+            <p>En cas de fusion, acquisition ou cession totale ou partielle de l'activité LoopyAd, vos données pourront être transférées au repreneur, qui sera tenu de respecter la présente politique. Vous en serez informé préalablement.</p>
+        </section>
+
+        <section id="droit">
+            <h2>6. Vos droits</h2>
+            <ul>
+                <li><strong>Droit d'accès (art. 15 RGPD) :</strong> obtenir la confirmation que des données vous concernant sont traitées, et en recevoir une copie.</li>
+                <li><strong>Droit de rectification (art. 16 RGPD) :</strong> faire corriger des données inexactes ou incomplètes.</li>
+                <li><strong>Droit à l'effacement (art. 17 RGPD) :</strong> demander la suppression de vos données, sous réserve des obligations légales de conservation.</li>
+                <li><strong>Droit à la limitation du traitement (art. 18 RGPD) :</strong> demander la suspension du traitement dans certaines circonstances.</li>
+                <li><strong>Droit à la portabilité (art. 20 RGPD) :</strong> recevoir vos données dans un format structuré et lisible par machine.</li>
+                <li><strong>Droit d'opposition (art. 21 RGPD) :</strong> vous opposer au traitement fondé sur notre intérêt légitime, notamment à des fins de prospection commerciale.</li>
+                <li><strong>Droit de retrait du consentement :</strong> retirer à tout moment votre consentement pour les traitements qui en dépendent (ex. newsletters), sans que cela affecte la licéité des traitements antérieurs.</li>
+            </ul>
+            <p>Pour exercer l'un de ces droits, contactez-nous à <strong>privacy@loopyad.com</strong>. Nous répondrons dans un délai maximum de 30 jours à compter de la réception de votre demande. Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la CNIL (France) ou de l'AEPD (Espagne).</p>
+        </section>
+
+        <section id="cons">
+            <h2>7. Durées de conservation</h2>
+            <ul>
+                <li>Données de compte (hôte ou annonceur) : Durée de la relation contractuelle + 3 ans après résiliation</li>
+                <li>Données de facturation et transactions : 10 ans (obligations comptables légales)</li>
+                <li>Logs de diffusion des écrans : 13 mois glissants</li>
+                <li>Données de cookies et navigation : 13 mois maximum</li>
+                <li>Données de support client : 3 ans après la clôture du ticket</li>
+                <li>Données de prospection (non-clients) : 3 ans après le dernier contact</li>
+                <li>Contenus publicitaires uploadés : Durée de la campagne + 6 mois</li>
+            </ul>
+        </section>
+
+        <section id="secu">
+            <h2>8. Sécurité des données</h2>
+            <ul>
+                <li>Chiffrement des données en transit via le protocole TLS 1.3 et au repos via AES-256.</li>
+                <li>Mots de passe hachés avec un algorithme sécurisé (bcrypt) — LoopyAd ne stocke jamais vos mots de passe en clair.</li>
+                <li>Données de carte bancaire traitées exclusivement par Stripe, certifié PCI DSS niveau 1 — LoopyAd n'a jamais accès à ces données.</li>
+                <li>Accès aux données restreint aux seuls membres de l'équipe qui en ont besoin dans le cadre de leurs fonctions, soumis à des obligations de confidentialité.</li>
+                <li>Authentification à deux facteurs disponible pour l'accès aux interfaces d'administration.</li>
+                <li>Sauvegardes régulières des données avec procédure de restauration testée.</li>
+            </ul>
+        </section>
+
+        <section id="cook">
+            <h2>9. Cookies et traceurs</h2>
+            <p><strong>Cookies strictement nécessaires</strong> : Ces cookies sont indispensables au fonctionnement de la plateforme. Ils ne peuvent pas être désactivés. Base légale : intérêt légitime.</p>
+            <p><strong>Cookies de mesure d'audience</strong> : Ces cookies nous permettent de mesurer le trafic et d'améliorer la plateforme. Base légale : consentement.</p>
+            <p><strong>Cookies marketing</strong> : Ces cookies permettent de vous proposer des contenus personnalisés. Base légale : consentement.</p>
+        </section>
+
+        <section id="mod">
+            <h2>10. Modifications de la présente politique</h2>
+            <p>LoopyAd se réserve le droit de modifier la présente politique de confidentialité à tout moment. En cas de modifications substantielles, nous vous en informerons par email au moins 30 jours avant leur entrée en vigueur. La poursuite de l'utilisation de la plateforme après cette date vaut acceptation de la politique révisée.</p>
+        </section>
+
+        <section id="cont" class="border-none">
+            <h2>11. Nous contacter</h2>
+            <div class="highlight-box">
+                <p><strong>Délégué à la Protection des Données (DPD)</strong><br>
+                Email : privacy@loopyad.com<br>
+                Adresse postale : LoopyAd — Service Confidentialité, [adresse à compléter]</p>
+            </div>
+            <p>En France : CNIL — cnil.fr · 3 Place de Fontenoy, 75007 Paris</p>
+            <p>En Espagne : AEPD — aepd.es · C/ Jorge Juan, 6, 28001 Madrid</p>
+        </section>
+    </div>
+</main>
+
+</body>
+</html>

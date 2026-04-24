@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Commercial - LoopyAd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bleu-fonce: #003366;
+            --bleu-cyan: #00D1FF;
+            --gris-fond: #F8FAFC;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
+        .sidebar-link:hover { background: rgba(0, 209, 255, 0.1); color: var(--bleu-cyan); }
+        .stat-card { transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body class="flex min-h-screen">
+
+    <aside class="w-64 bg-[#0A2540] text-white flex flex-col fixed h-full">
+        <div class="p-8 border-b border-slate-700">
+            <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" alt="LoopyAd" class="h-8 brightness-0 invert">
+            <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest mt-2">Espace Commercial</p>
+        </div>
+        
+        <nav class="flex-grow p-6 space-y-2">
+            <a href="#" class="flex items-center gap-3 p-3 rounded-xl bg-cyan-500/10 text-cyan-400 font-bold">
+                <span>📊</span> Vue d'ensemble
+            </a>
+            <a href="#" class="flex items-center gap-3 p-3 rounded-xl sidebar-link text-slate-400 transition">
+                <span>📺</span> Mon parc écrans
+            </a>
+            <a href="#" class="flex items-center gap-3 p-3 rounded-xl sidebar-link text-slate-400 transition">
+                <span>💼</span> Mes annonceurs
+            </a>
+            <a href="#" class="flex items-center gap-3 p-3 rounded-xl sidebar-link text-slate-400 transition">
+                <span>💰</span> Commissions
+            </a>
+        </nav>
+
+        <div class="p-6 border-t border-slate-700">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-10 h-10 rounded-full bg-cyan-500 flex items-center justify-center font-bold text-white">JD</div>
+                <div>
+                    <div class="text-sm font-bold">Jean Dupont</div>
+                    <div class="text-[10px] text-slate-400">Agent Senior</div>
+                </div>
+            </div>
+            <a href="index.html" class="block text-center py-2 rounded-lg border border-slate-600 text-xs hover:bg-white hover:text-black transition">Déconnexion</a>
+        </div>
+    </aside>
+
+    <main class="flex-grow ml-64 p-10">
+        
+        <header class="flex justify-between items-end mb-12">
+            <div>
+                <h1 class="text-3xl font-black text-[#003366] tracking-tight">Tableau de bord</h1>
+                <p class="text-slate-500 mt-1">Bienvenue, voici vos performances pour ce mois-ci.</p>
+            </div>
+            <div class="flex gap-4">
+                <button class="px-6 py-3 bg-white border border-slate-200 rounded-xl font-bold text-sm shadow-sm hover:bg-slate-50 transition">Extraire rapport</button>
+                <button class="px-6 py-3 bg-[#00D4FF] text-white rounded-xl font-black text-sm shadow-lg shadow-cyan-500/20 hover:scale-105 transition">Nouvelle vente +</button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 stat-card">
+                <div class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Commissions (Mois)</div>
+                <div class="text-3xl font-black text-[#003366]">1 240,50 €</div>
+                <div class="mt-2 text-emerald-500 text-xs font-bold">↑ +12% vs mois dernier</div>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 stat-card">
+                <div class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Écrans installés</div>
+                <div class="text-3xl font-black text-[#003366]">14</div>
+                <div class="mt-2 text-slate-400 text-xs font-bold">Objectif : 20</div>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 stat-card">
+                <div class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Campagnes actives</div>
+                <div class="text-3xl font-black text-[#003366]">32</div>
+                <div class="mt-2 text-emerald-500 text-xs font-bold">4 nouvelles cette semaine</div>
+            </div>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 stat-card">
+                <div class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Taux de rétention</div>
+                <div class="text-3xl font-black text-[#003366]">94%</div>
+                <div class="mt-2 text-blue-500 text-xs font-bold">Excellent</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-slate-50 flex justify-between items-center">
+                    <h3 class="font-black text-[#003366]">Dernières installations hôtes</h3>
+                    <a href="#" class="text-xs font-bold text-cyan-500 hover:underline">Voir tout le parc</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-slate-50 text-[10px] uppercase font-bold text-slate-400">
+                            <tr>
+                                <th class="px-6 py-4">Établissement</th>
+                                <th class="px-6 py-4">Ville</th>
+                                <th class="px-6 py-4">Statut</th>
+                                <th class="px-6 py-4">Revenu Généré</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm text-slate-600">
+                            <tr class="border-b border-slate-50 hover:bg-slate-50 transition">
+                                <td class="px-6 py-4 font-bold text-[#0A2540]">Le Bistrot du Marché</td>
+                                <td class="px-6 py-4">Valencia</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-emerald-50 text-emerald-600 rounded-lg text-[10px] font-bold">Actif</span></td>
+                                <td class="px-6 py-4 font-bold">450,00 €</td>
+                            </tr>
+                            <tr class="border-b border-slate-50 hover:bg-slate-50 transition">
+                                <td class="px-6 py-4 font-bold text-[#0A2540]">Pharmacie Centrale</td>
+                                <td class="px-6 py-4">Gandia</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-amber-50 text-amber-600 rounded-lg text-[10px] font-bold">En attente</span></td>
+                                <td class="px-6 py-4 font-bold">0,00 €</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-6 py-4 font-bold text-[#0A2540]">Marta Coiffure</td>
+                                <td class="px-6 py-4">Valencia</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 bg-emerald-50 text-emerald-600 rounded-lg text-[10px] font-bold">Actif</span></td>
+                                <td class="px-6 py-4 font-bold">320,50 €</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
+                <h3 class="font-black text-[#003366] mb-6">À faire aujourd'hui</h3>
+                <div class="space-y-4">
+                    <div class="p-4 bg-slate-50 rounded-2xl border-l-4 border-cyan-400">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">10:30 · Appel</div>
+                        <div class="text-sm font-bold text-[#0A2540]">Relancer Boulangerie Banette</div>
+                        <div class="text-xs text-slate-500 mt-1">Signature contrat écran hôte attendue.</div>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-2xl border-l-4 border-blue-600">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">14:00 · Visite</div>
+                        <div class="text-sm font-bold text-[#0A2540]">Installation Restaurant Marina</div>
+                        <div class="text-xs text-slate-500 mt-1">Vérifier connexion Wi-Fi de l'écran.</div>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-2xl border-l-4 border-slate-200">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">Notes</div>
+                        <div class="text-sm font-bold text-[#0A2540]">Préparer rapport de zone</div>
+                        <div class="text-xs text-slate-500 mt-1">Analyse des écrans disponibles sur Gandia.</div>
+                    </div>
+                </div>
+                <button class="w-full mt-6 py-3 border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 text-sm font-bold hover:border-cyan-200 hover:text-cyan-500 transition">
+                    + Ajouter une tâche
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>

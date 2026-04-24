@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement - LoopyAd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
+        
+        .icon-gradient {
+            background: linear-gradient(135deg, #00D1FF 0%, #003366 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, #00D1FF 0%, #003366 100%);
+            box-shadow: 0 10px 20px rgba(0, 209, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .btn-premium:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(0, 209, 255, 0.3);
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="bg-white border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="index.html">
+                    <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" alt="LoopyAd" class="h-[35px] w-auto">
+                </a>
+            </div>
+            <div class="text-sm font-bold text-gray-400 uppercase tracking-widest">
+                Paiement Sécurisé
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-4 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            
+            <div>
+                <h2 class="text-xl font-bold mb-6 text-gray-800">Résumé de la commande</h2>
+                <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+                    <div class="pb-6 mb-4 border-b border-gray-100">
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            Vous avez choisi l'offre :
+                        </p>
+                        <div class="mt-3 inline-block px-4 py-2 border-2 border-[#00D1FF] rounded-xl">
+                            <span id="display-offre" class="font-black text-gray-900 uppercase tracking-wider text-lg">--</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-4 font-medium uppercase tracking-wide">
+                             <span id="display-ecrans" class="text-gray-900 font-bold">0</span> écran(s) actif(s) sur le réseau
+                        </p>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>Prix unitaire HT</span>
+                            <span id="subtotal-ht" class="font-medium">0,00€</span>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600 pb-4">
+                            <span>TVA (21%)</span>
+                            <span id="tax-amount" class="font-medium">0,00€</span>
+                        </div>
+                        
+                        <div class="pt-4 border-t border-gray-100 flex justify-between items-end">
+                            <span class="text-lg font-bold text-gray-900">Total TTC</span>
+                            <div class="text-right">
+                                <p id="display-prix" class="text-4xl font-black text-[#00D1FF] tracking-tighter">0,00€</p>
+                                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mt-1">Facturation mensuelle</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-4 bg-gray-100 rounded-lg flex gap-3">
+                    <span class="text-gray-400">🔒</span>
+                    <p class="text-[11px] text-gray-500 leading-relaxed">
+                        Vos informations de paiement sont traitées de manière sécurisée. En confirmant votre achat, vous acceptez nos <a href="conditions-utilisation.html" class="text-cyan-600 font-bold hover:underline">conditions générales de vente</a>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xl">
+                <h2 class="text-xl font-bold mb-6 text-gray-800">Détails du paiement</h2>
+                
+                <form id="payForm">
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Titulaire de la carte</label>
+                        <input type="text" placeholder="NOM PRÉNOM" class="w-full border border-gray-200 rounded-lg p-3 outline-none focus:border-[#00D1FF] transition-all" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Numéro de carte</label>
+                        <div class="relative">
+                            <input type="text" placeholder="0000 0000 0000 0000" class="w-full border border-gray-200 rounded-lg p-3 outline-none focus:border-[#00D1FF] transition-all" required>
+                            <span class="absolute right-3 top-3 text-lg icon-gradient">💳</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Expiration</label>
+                            <input type="text" placeholder="MM / YY" class="w-full border border-gray-200 rounded-lg p-3 outline-none focus:border-[#00D1FF] transition-all" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">CVC</label>
+                            <input type="password" placeholder="123" class="w-full border border-gray-200 rounded-lg p-3 outline-none focus:border-[#00D1FF] transition-all" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full btn-premium text-white font-extrabold py-4 rounded-xl transition-all transform active:scale-[0.98]">
+                        Confirmer le paiement
+                    </button>
+                    
+                    <div class="flex items-center justify-center gap-6 mt-8 opacity-30 grayscale">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" class="h-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" class="h-5">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/2560px-Stripe_Logo%2C_revised_2016.svg.png" class="h-5">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const currentOffre = params.get('offre') || 'Standard';
+        const currentEcrans = params.get('ecrans') || '0';
+        const totalTTC = parseFloat(params.get('prix')) || 0;
+
+        const subtotalHT = totalTTC / 1.21;
+        const taxAmount = totalTTC - subtotalHT;
+
+        document.getElementById('display-offre').textContent = currentOffre;
+        document.getElementById('display-ecrans').textContent = currentEcrans;
+        document.getElementById('subtotal-ht').textContent = subtotalHT.toFixed(2) + '€';
+        document.getElementById('tax-amount').textContent = taxAmount.toFixed(2) + '€';
+        document.getElementById('display-prix').textContent = totalTTC.toFixed(2) + '€';
+
+        document.getElementById('payForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button');
+            btn.innerHTML = `Traitement sécurisé...`;
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                window.location.href = `dashboard-annonceur.html?ecrans=${currentEcrans}&offre=${currentOffre}&prix=${totalTTC}&status=success`;
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

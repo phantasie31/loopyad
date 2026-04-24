@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Annonceur - LoopyAd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bleu-fonce: #0A2540;
+            --bleu-cyan: #00D1FF;
+        }
+        /* Protection d'affichage : invisible tant que loadUserData n'a pas validé */
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; display: none; }
+        .nav-link { transition: all 0.2s; color: #64748B; cursor: pointer; }
+        .nav-link.active {
+            background-color: #f1f5f9;
+            color: var(--bleu-fonce);
+            font-weight: 600;
+            border-left: 4px solid var(--bleu-cyan);
+        }
+        .bg-gradient-pro { background: linear-gradient(135deg, #00D4FF 0%, #0A2540 100%); }
+        .card-shadow { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body>
+
+<nav class="bg-white border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+        <a href="index.html" class="flex items-center">
+            <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" alt="LoopyAd" class="h-[35px] w-auto">
+        </a>
+        <div class="flex items-center gap-6">
+            <a href="annonceur.html" class="text-sm font-semibold py-2 px-5 bg-cyan-50 text-cyan-600 rounded-full hover:bg-cyan-100 transition">
+                + Acheter des écrans
+            </a>
+            <div id="user-initials" onclick="logout()" class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-sm font-bold text-slate-700 cursor-pointer hover:bg-gray-300 transition" title="Se déconnecter">JD</div>
+        </div>
+    </div>
+</nav>
+
+<div class="flex max-w-7xl mx-auto">
+    <aside class="w-72 bg-white border-r min-h-screen p-6 hidden lg:block flex-shrink-0">
+        <div class="space-y-1">
+            <div onclick="showSection('overview')" class="nav-link active flex items-center gap-3 px-4 py-3 rounded-r-2xl">
+                📊 Vue d'ensemble
+            </div>
+            <div onclick="showSection('campaigns')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-r-2xl">
+                📺 Mes Campagnes
+            </div>
+            <div onclick="showSection('creatives')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-r-2xl">
+                🎨 Mes Créations
+            </div>
+            <div onclick="showSection('referral')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-r-2xl">
+                🤝 Parrainage
+            </div>
+            <div onclick="showSection('billing')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-r-2xl">
+                💳 Facturation
+            </div>
+            <div onclick="showSection('support')" class="nav-link flex items-center gap-3 px-4 py-3 rounded-r-2xl mt-10">
+                🛠️ Support
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 min-w-0">
+        
+        <div id="section-overview" class="section">
+            <h1 class="text-3xl font-bold mb-2 text-slate-800">Bienvenue, <span id="user-name">...</span></h1>
+            <p class="text-gray-500 mb-8">Tableau de bord de <span id="company-name" class="font-semibold text-slate-800">...</span></p>
+
+            <div class="bg-gradient-pro text-white rounded-3xl p-8 mb-10 shadow-xl relative overflow-hidden">
+                <div class="flex justify-between items-start relative z-10">
+                    <div>
+                        <div class="text-sm opacity-80 uppercase tracking-widest font-bold">Statut du compte</div>
+                        <h2 class="text-4xl font-bold mt-2">Campagne Active</h2>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/30">
+                        <span id="display-offre" class="font-bold">Offre Standard</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-8 mt-12 relative z-10">
+                    <div>
+                        <div class="text-5xl font-bold" id="stat-ecrans">0</div>
+                        <div class="text-sm opacity-80 mt-2">Écrans réservés</div>
+                    </div>
+                    <div>
+                        <div class="text-5xl font-bold" id="stat-vues">0</div>
+                        <div class="text-sm opacity-80 mt-2">Vues estimées / mois</div>
+                    </div>
+                    <div>
+                        <div class="text-5xl font-bold text-cyan-300" id="stat-taux">0%</div>
+                        <div class="text-sm opacity-80 mt-2">Taux de diffusion</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-3xl border card-shadow">
+                    <h3 class="font-bold text-lg mb-6 flex items-center gap-2">📈 Portée hebdomadaire</h3>
+                    <div class="h-48 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-400 border border-dashed text-sm italic">
+                        Graphique de diffusion en attente de données
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-3xl border card-shadow">
+                    <h3 class="font-bold text-lg mb-6">Informations de facturation</h3>
+                    <div class="flex justify-between py-3 border-b border-gray-50">
+                        <span class="text-gray-500">Prochain prélèvement</span>
+                        <span class="font-semibold">--</span>
+                    </div>
+                    <div class="flex justify-between py-3 border-b border-gray-50">
+                        <span class="text-gray-500">Montant total</span>
+                        <span class="font-semibold text-emerald-600" id="stat-total">0€</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-campaigns" class="section hidden">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold mb-2 text-slate-800">Mes Campagnes</h1>
+                    <p class="text-gray-500">Gérez le contenu diffusé sur vos <span id="nb-ecrans-text" class="font-bold text-cyan-600">0</span> écrans</p>
+                </div>
+            </div>
+            <div id="spots-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+
+        <div id="section-creatives" class="section hidden">
+            <h1 class="text-3xl font-bold mb-8">Ma Bibliothèque</h1>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-3xl p-6 border border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-cyan-400 hover:bg-cyan-50 transition-all group">
+                    <div class="text-4xl mb-3 text-gray-300 group-hover:scale-110 transition">+</div>
+                    <div class="font-medium text-gray-500">Nouvelle Pub</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-referral" class="section hidden">
+            <h1 class="text-3xl font-bold mb-8">🤝 Parrainage</h1>
+            <div class="bg-white rounded-3xl p-8 border card-shadow">
+                <p class="text-gray-600 mb-4">Gagnez des mois gratuits en parrainant d'autres commerces.</p>
+                <div class="p-4 bg-gray-50 rounded-2xl border font-mono text-center text-xl text-cyan-600 font-bold border-dashed">
+                    LOOPY-REF-2026
+                </div>
+            </div>
+        </div>
+
+        <div id="section-billing" class="section hidden">
+            <h1 class="text-3xl font-bold mb-8 text-slate-800">Facturation</h1>
+            <div class="bg-white rounded-3xl border overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50 text-gray-500 text-sm uppercase">
+                        <tr>
+                            <th class="px-6 py-4">Date</th>
+                            <th class="px-6 py-4">Description</th>
+                            <th class="px-6 py-4">Montant</th>
+                            <th class="px-6 py-4">Facture</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="px-6 py-4">Aujourd'hui</td>
+                            <td class="px-6 py-4 font-medium" id="bill-desc">Abonnement LoopyAd</td>
+                            <td class="px-6 py-4 font-bold" id="bill-total">0€</td>
+                            <td class="px-6 py-4 text-cyan-600 cursor-pointer font-medium underline">PDF</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="section-support" class="section hidden">
+            <h1 class="text-3xl font-bold mb-8 text-slate-800">🛠️ Support</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-8 rounded-3xl border card-shadow">
+                    <div class="text-3xl mb-4">💬</div>
+                    <h3 class="font-bold text-lg">Chat en direct</h3>
+                    <p class="text-gray-500 text-sm">Réponse moyenne en 5 min.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl border card-shadow">
+                    <div class="text-3xl mb-4">📧</div>
+                    <h3 class="font-bold text-lg">Email</h3>
+                    <p class="text-gray-500 text-sm">support@loopyad.com</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = 'https://srfxehetueqazykzwrhw.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZnhlaGV0dWVxYXp5a3p3cmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NjQ4NjksImV4cCI6MjA5MjU0MDg2OX0.tqw6lik68x0js0VVm-xAuLFZ17mFf3LM6h5g85eow68';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function loadUserData() {
+        const email = localStorage.getItem('userEmail');
+        
+        // Sécurité 1 : Pas d'email dans le stockage -> Retour login
+        if (!email) { window.location.href = 'login.html'; return; }
+
+        const { data, error } = await _supabase
+            .from('annonceurs')
+            .select('*')
+            .eq('email', email)
+            .single();
+
+        // Sécurité 2 : Email valide mais introuvable en base -> Retour login
+        if (error || !data) {
+            console.error("Profil introuvable");
+            localStorage.clear();
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Si tout est bon, on affiche les données et on débloque l'affichage
+        document.getElementById('user-name').textContent = data.prenom || "";
+        document.getElementById('company-name').textContent = data.nom_entreprise || "";
+        document.getElementById('user-initials').textContent = ((data.prenom?.[0] || '') + (data.nom?.[0] || '')).toUpperCase();
+        
+        // Sécurité 3 : On rend le body visible
+        document.body.style.display = "block";
+    }
+
+    function logout() {
+        localStorage.clear();
+        window.location.href = 'login.html';
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const nbEcrans = parseInt(params.get('ecrans')) || 0;
+    const offre = params.get('offre') || 'Standard';
+    const totalAffiche = params.get('prix') || (nbEcrans * 39);
+
+    document.getElementById('stat-ecrans').textContent = nbEcrans;
+    document.getElementById('nb-ecrans-text').textContent = nbEcrans;
+    document.getElementById('display-offre').textContent = "Offre " + offre;
+    document.getElementById('stat-total').textContent = totalAffiche + "€";
+    document.getElementById('bill-total').textContent = totalAffiche + "€";
+    document.getElementById('bill-desc').textContent = "Abonnement " + offre + " (" + nbEcrans + " écrans)";
+
+    const container = document.getElementById('spots-container');
+    for (let i = 1; i <= nbEcrans; i++) {
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-3xl p-6 border card-shadow flex flex-col justify-between group hover:border-cyan-400 transition";
+        card.innerHTML = `
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <div class="text-xs font-bold text-cyan-600 uppercase mb-1">Point de diffusion #${i}</div>
+                    <h4 class="text-xl font-bold">Écran ${i}</h4>
+                </div>
+                <div class="bg-green-100 text-green-700 text-[10px] font-bold px-3 py-1 rounded-full">● ACTIF</div>
+            </div>
+            <div id="content-${i}" class="bg-gray-50 rounded-2xl p-8 border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:bg-white transition" onclick="assignContent(${i})">
+                <div class="text-3xl mb-2">📁</div>
+                <div class="font-bold text-gray-500">Assigner une création</div>
+                <div class="text-xs text-gray-400">Cliquez pour choisir un visuel</div>
+            </div>
+            <div class="mt-6 flex justify-between items-center text-sm text-gray-500">
+                <span>Diffusion : 7j/7</span>
+            </div>
+        `;
+        container.appendChild(card);
+    }
+
+    function assignContent(id) {
+        const title = prompt("Nom de votre création (ex: Promo Eté) :");
+        if (title) {
+            const div = document.getElementById(`content-${id}`);
+            div.className = "bg-white rounded-2xl p-8 border-2 border-cyan-400 flex flex-col items-center justify-center";
+            div.innerHTML = `
+                <div class="text-4xl mb-2">✅</div>
+                <div class="font-bold text-cyan-700">${title}</div>
+                <div class="text-xs text-cyan-500">En cours de diffusion</div>
+            `;
+        }
+    }
+
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+        const target = document.getElementById(`section-${sectionId}`);
+        if(target) target.classList.remove('hidden');
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('onclick').includes(sectionId)) link.classList.add('active');
+        });
+    }
+
+    window.onload = () => { loadUserData(); showSection('overview'); };
+</script>
+</body>
+</html>

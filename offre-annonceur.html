@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoopyAd - Choisissez votre offre</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f9fafb;color:#111827}
+        .hero-bg { background: linear-gradient(135deg, #00D4FF 0%, #0A2540 100%); color: white; padding: 3rem 0; text-align: center; }
+        .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.75rem}
+        .stat{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:12px;text-align:center}
+        .stat-val{font-size:1.25rem;font-weight:700;color:#00D4FF}
+        .stat-lbl{font-size:11px;color:#6b7280;margin-top:2px}
+        .toggle-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:1.5rem;flex-wrap:wrap}
+        .tl{font-size:.875rem;color:#6b7280}
+        .tl.on{font-weight:600;color:#111827}
+        .trk{width:44px;height:24px;background:#d1d5db;border-radius:99px;cursor:pointer;position:relative;border:none;transition:background .2s;flex-shrink:0}
+        .trk.on{background:#00D4FF}
+        .knb{position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .2s;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+        .trk.on .knb{transform:translateX(20px)}
+        .eco-pill{background:#D1FAE5;color:#065f46;font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px}
+        .sec-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af;margin:1.75rem 0 .875rem}
+        .unit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+        .uc{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1.125rem;display:flex;flex-direction:column;gap:8px}
+        .uc.feat{border:2px solid #00D4FF}
+        .top-badge{background:#00D4FF;color:#fff;font-size:10px;font-weight:600;padding:2px 10px;border-radius:99px;width:fit-content}
+        .badge-row{display:flex;align-items:center;gap:6px;font-size:.875rem;font-weight:600}
+        .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+        .price-line{display:flex;align-items:baseline;gap:3px;flex-wrap:wrap}
+        .pm{font-size:1.625rem;font-weight:700}
+        .pw{font-size:.8125rem;color:#9ca3af;text-decoration:line-through;display:none}
+        .pmo{font-size:.75rem;color:#6b7280}
+        .pday{font-size:11px;color:#9ca3af}
+        .fdesc{font-size:11px;color:#6b7280;line-height:1.5}
+        .feat-list{display:flex;flex-direction:column;gap:5px;margin-top:2px}
+        .fi{display:flex;align-items:center;gap:6px;font-size:.75rem;color:#4b5563}
+        .ck{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;flex-shrink:0}
+        .ucta{margin-top:auto;padding-top:4px}
+        .ucta button{width:100%;padding:9px;border-radius:8px;font-size:.8125rem;font-weight:600;cursor:pointer;border:1px solid #e5e7eb;background:#f3f4f6;color:#374151;transition:background .15s}
+        .ucta button:hover{background:#e5e7eb}
+        .uc.feat .ucta button{background:#00D4FF;color:#fff;border-color:#00D4FF}
+        .pack{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1.25rem;margin-bottom:10px}
+        .pack.best{border:2px solid #00D4FF}
+        .pbest{background:#00D4FF;color:#fff;font-size:10px;font-weight:600;padding:2px 10px;border-radius:99px;width:fit-content;margin-bottom:10px}
+        .pack-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+        .pack-name{font-size:.9375rem;font-weight:700}
+        .pack-sub{font-size:.75rem;color:#6b7280;margin-top:2px}
+        .pack-pr{text-align:right;flex-shrink:0}
+        .ppm{font-size:1.625rem;font-weight:700}
+        .ppw{font-size:.75rem;color:#9ca3af;text-decoration:line-through;display:none}
+        .ppmo{font-size:11px;color:#6b7280}
+        .sep{height:1px;background:#f3f4f6;margin:10px 0}
+        .pack-body{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .comp-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin-bottom:6px}
+        .ctags{display:flex;flex-wrap:wrap;gap:5px}
+        .ctag{display:flex;align-items:center;gap:4px;background:#f3f4f6;border-radius:6px;padding:3px 8px;font-size:11px;color:#374151}
+        .comp-note{font-size:11px;color:#6b7280;margin-top:8px;line-height:1.5}
+        .sv-row{display:flex;justify-content:space-between;align-items:center;font-size:.75rem;margin-bottom:5px}
+        .sv-green{color:#065f46;font-weight:600}
+        .sv-pct{background:#D1FAE5;color:#065f46;font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px}
+        .sv-year{font-size:11px;color:#6b7280;margin-top:2px}
+        .pcta{width:100%;margin-top:12px;padding:10px;border-radius:8px;font-size:.875rem;font-weight:600;cursor:pointer;border:1px solid #e5e7eb;background:#f3f4f6;color:#374151;transition:background .15s}
+        .pcta:hover{background:#e5e7eb}
+        .pack.best .pcta{background:#00D4FF;color:#fff;border-color:#00D4FF}
+        .pack.best .pcta:hover{background:#00b8dd}
+    </style>
+</head>
+<body>
+
+<nav class="bg-white border-b sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+        <a href="index.html" class="flex items-center">
+            <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" alt="LoopyAd" style="height: 35px;">
+        </a>
+        <a href="annonceur.html" class="text-gray-500 hover:text-gray-900">← Retour à la carte</a>
+    </div>
+</nav>
+
+<div class="hero-bg py-12 text-center">
+    <h1 class="text-4xl font-bold">Votre sélection : <span id="nb-ecrans">0</span> écrans</h1>
+    <p id="info-quotas" class="text-cyan-100 mt-2 font-medium"></p>
+</div>
+
+<div class="max-w-[860px] mx-auto px-6 py-8">
+    <h1 class="text-2xl font-bold mb-2">Nos solutions publicitaires</h1>
+    <p class="mb-6 text-gray-600">Boostez votre visibilité locale dès <strong>0,63€ par jour</strong></p>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-val">0,63€</div><div class="stat-lbl">par jour minimum</div></div>
+      <div class="stat"><div class="stat-val">~86×</div><div class="stat-lbl">passages/spot/jour</div></div>
+      <div class="stat"><div class="stat-val">−52%</div><div class="stat-lbl">vs tarif unitaire (Pack 10)</div></div>
+      <div class="stat"><div class="stat-val">24h</div><div class="stat-lbl">mise en ligne garantie</div></div>
+    </div>
+
+    <div class="toggle-wrap">
+      <span class="tl on" id="lf">Sans engagement</span>
+      <button class="trk" id="tog" onclick="flip()"><div class="knb"></div></button>
+      <span class="tl" id="la">Engagement 12 mois</span>
+      <span class="eco-pill" id="epill" style="display:none">Jusqu'à −52% d'économie</span>
+    </div>
+
+    <div class="sec-title">1 — Choisissez votre écran</div>
+    <div class="unit-grid">
+      <div class="uc" onclick="selectOffer(this)">
+        <div class="badge-row"><div class="dot" style="background:#22c55e"></div>Essentiel</div>
+        <div class="price-line"><span class="pm" id="ve">29€</span><span class="pw" id="we">29€</span><span class="pmo">/mois</span></div>
+        <div class="pday" id="de">soit 0,97€/jour</div>
+        <div class="fdesc">60–120 pers./jour<br>Médecin, garage, opticien</div>
+        <div class="feat-list">
+          <div class="fi"><div class="ck" style="background:#22c55e">✓</div>~2 500 passages/mois</div>
+          <div class="fi"><div class="ck" style="background:#22c55e">✓</div>Spot 20 secondes en boucle</div>
+          <div class="fi"><div class="ck" style="background:#22c55e">✓</div>Visuel modifiable à tout moment</div>
+        </div>
+        <div class="ucta"><button onclick="event.stopImmediatePropagation();validerChoix('Essentiel', ann ? 19 : 29)">Démarrer Essentiel →</button></div>
+      </div>
+
+      <div class="uc feat" onclick="selectOffer(this)">
+        <div class="top-badge">Le plus choisi</div>
+        <div class="badge-row"><div class="dot" style="background:#3b82f6"></div>Standard</div>
+        <div class="price-line"><span class="pm" id="vs">39€</span><span class="pw" id="ws">39€</span><span class="pmo">/mois</span></div>
+        <div class="pday" id="ds">soit 1,30€/jour</div>
+        <div class="fdesc">120–200 pers./jour<br>Coiffeur, pharmacie, restaurant</div>
+        <div class="feat-list">
+          <div class="fi"><div class="ck" style="background:#3b82f6">✓</div>~4 000 passages/mois</div>
+          <div class="fi"><div class="ck" style="background:#3b82f6">✓</div>Spot 20 secondes en boucle</div>
+          <div class="fi"><div class="ck" style="background:#3b82f6">✓</div>Visuel modifiable à tout moment</div>
+          <div class="fi"><div class="ck" style="background:#3b82f6">✓</div>Statistiques de diffusion</div>
+        </div>
+        <div class="ucta"><button onclick="event.stopImmediatePropagation();validerChoix('Standard', ann ? 29 : 39)">Démarrer Standard →</button></div>
+      </div>
+
+      <div class="uc" onclick="selectOffer(this)">
+        <div class="badge-row"><div class="dot" style="background:#00D4FF"></div>Premium</div>
+        <div class="price-line"><span class="pm" id="vp">49€</span><span class="pw" id="wp">49€</span><span class="pmo">/mois</span></div>
+        <div class="pday" id="dp">soit 1,63€/jour</div>
+        <div class="fdesc">200–400 pers./jour<br>Salle de sport, bar, coworking</div>
+        <div class="feat-list">
+          <div class="fi"><div class="ck" style="background:#00D4FF">✓</div>~6 000 passages/mois</div>
+          <div class="fi"><div class="ck" style="background:#00D4FF">✓</div>Spot 20 secondes en boucle</div>
+          <div class="fi"><div class="ck" style="background:#00D4FF">✓</div>Visuel modifiable à tout moment</div>
+          <div class="fi"><div class="ck" style="background:#00D4FF">✓</div>Statistiques avancées</div>
+        </div>
+        <div class="ucta"><button onclick="event.stopImmediatePropagation();validerChoix('Premium', ann ? 39 : 49)">Démarrer Premium →</button></div>
+      </div>
+    </div>
+
+    <div class="sec-title">2 — Packs réseau — divisez vos coûts par deux</div>
+
+    <div class="pack" onclick="selectOffer(this)">
+      <div class="pack-top">
+        <div>
+          <div class="pack-name">Pack 5 écrans — Ciblage quartier</div>
+          <div class="pack-sub">Votre marque dans 5 lieux de votre zone simultanément</div>
+        </div>
+        <div class="pack-pr">
+          <div class="ppm" id="v5">99€</div>
+          <div class="ppw" id="w5">99€</div>
+          <div class="ppmo">/mois</div>
+        </div>
+      </div>
+      <div class="sep"></div>
+      <div class="pack-body">
+        <div>
+          <div class="comp-title">Composition</div>
+          <div class="ctags">
+            <div class="ctag"><div class="dot" style="background:#00D4FF;width:7px;height:7px"></div>1 Premium</div>
+            <div class="ctag"><div class="dot" style="background:#3b82f6;width:7px;height:7px"></div>2 Standard</div>
+            <div class="ctag"><div class="dot" style="background:#22c55e;width:7px;height:7px"></div>2 Essentiel</div>
+          </div>
+          <div class="comp-note">Idéal pour dominer une zone commerciale ou un quartier résidentiel.</div>
+        </div>
+        <div>
+          <div class="comp-title">Économies</div>
+          <div class="sv-row"><span style="color:#6b7280">Valeur unitaire</span><span id="u5">135€/mois</span></div>
+          <div class="sv-row"><span class="sv-green" id="s5">−56€/mois</span><span class="sv-pct" id="p5">−41%</span></div>
+          <div class="sv-year" id="y5">soit 672€ économisés sur 12 mois</div>
+        </div>
+      </div>
+      <button onclick="event.stopImmediatePropagation();validerChoix('Pack 5', ann ? 79 : 99)" class="pcta">Choisir Pack 5 écrans →</button>
+    </div>
+
+    <div class="pack best" onclick="selectOffer(this)">
+      <div class="pbest">Meilleure valeur — économisez 52%</div>
+      <div class="pack-top">
+        <div>
+          <div class="pack-name">Pack 10 écrans — Réseau local complet</div>
+          <div class="pack-sub">Devenez la référence incontournable de votre ville</div>
+        </div>
+        <div class="pack-pr">
+          <div class="ppm" id="v10">159€</div>
+          <div class="ppw" id="w10">159€</div>
+          <div class="ppmo">/mois</div>
+        </div>
+      </div>
+      <div class="sep"></div>
+      <div class="pack-body">
+        <div>
+          <div class="comp-title">Composition</div>
+          <div class="ctags">
+            <div class="ctag"><div class="dot" style="background:#00D4FF;width:7px;height:7px"></div>2 Premium</div>
+            <div class="ctag"><div class="dot" style="background:#3b82f6;width:7px;height:7px"></div>4 Standard</div>
+            <div class="ctag"><div class="dot" style="background:#22c55e;width:7px;height:7px"></div>4 Essentiel</div>
+          </div>
+          <div class="comp-note">Votre marque suit vos clients toute la journée — médecin, coiffeur, bar, sport.</div>
+        </div>
+        <div>
+          <div class="comp-title">Économies</div>
+          <div class="sv-row"><span style="color:#6b7280">Valeur unitaire</span><span id="u10">270€/mois</span></div>
+          <div class="sv-row"><span class="sv-green" id="s10">−141€/mois</span><span class="sv-pct" id="p10">−52%</span></div>
+          <div class="sv-year" id="y10">soit 1 692€ économisés sur 12 mois</div>
+        </div>
+      </div>
+      <button onclick="event.stopImmediatePropagation();validerChoix('Pack 10', ann ? 129 : 159)" class="pcta">Choisir Pack 10 écrans →</button>
+    </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://srfxehetueqazykzwrhw.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZnhlaGV0dWVxYXp5a3p3cmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NjQ4NjksImV4cCI6MjA5MjU0MDg2OX0.tqw6lik68x0js0VVm-xAuLFZ17mFf3LM6h5g85eow68';
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+var ann=false;
+var P={e:[29,19],s:[39,29],p:[49,39],p5:[99,79],p10:[159,129]};
+var Uf={u5:135,u10:270};
+var Ua={u5:105,u10:210};
+
+function flip(){
+    ann=!ann;
+    var t=document.getElementById('tog');
+    ann?t.classList.add('on'):t.classList.remove('on');
+    var lf=document.getElementById('lf'),la=document.getElementById('la');
+    ann?(lf.classList.remove('on'),la.classList.add('on')):(lf.classList.add('on'),la.classList.remove('on'));
+    document.getElementById('epill').style.display=ann?'inline-block':'none';
+    render();
+}
+
+function render(){
+    var U=ann?Ua:Uf;
+    var data=[
+        {pm:'ve',pw:'we',pd:'de',pf:P.e[0],pa:P.e[1]},
+        {pm:'vs',pw:'ws',pd:'ds',pf:P.s[0],pa:P.s[1]},
+        {pm:'vp',pw:'wp',pd:'dp',pf:P.p[0],pa:P.p[1]}
+    ];
+    data.forEach(function(d){
+        var price=ann?d.pa:d.pf;
+        document.getElementById(d.pm).textContent=price+'€';
+        var w=document.getElementById(d.pw);
+        w.textContent=d.pf+'€';
+        w.style.display=ann?'inline':'none';
+        document.getElementById(d.pd).textContent='soit '+(price/30.4).toFixed(2)+'€/jour';
+    });
+    var pp5=ann?P.p5[1]:P.p5[0],pp10=ann?P.p10[1]:P.p10[0];
+    var u5=U.u5,u10=U.u10;
+    var s5=u5-pp5,s10=u10-pp10;
+    var pct5=Math.round(s5/u5*100),pct10=Math.round(s10/u10*100);
+    document.getElementById('v5').textContent=pp5+'€';
+    document.getElementById('v10').textContent=pp10+'€';
+    var w5=document.getElementById('w5'),w10=document.getElementById('w10');
+    w5.textContent=P.p5[0]+'€'; w5.style.display=ann?'inline':'none';
+    w10.textContent=P.p10[0]+'€'; w10.style.display=ann?'inline':'none';
+    document.getElementById('u5').textContent=Uf.u5+'€/mois';
+    document.getElementById('u10').textContent=Uf.u10+'€/mois';
+    document.getElementById('s5').textContent='−'+s5+'€/mois';
+    document.getElementById('s10').textContent='−'+s10+'€/mois';
+    document.getElementById('p5').textContent='−'+pct5+'%';
+    document.getElementById('p10').textContent='−'+pct10+'%';
+    document.getElementById('y5').textContent='soit '+ (s5*12) +'€ économisés sur 12 mois';
+    document.getElementById('y10').textContent='soit '+ (s10*12) +'€ économisés sur 12 mois';
+}
+
+const urlParams = new URLSearchParams(window.location.search);
+const nb = parseInt(urlParams.get('ecrans')) || 1;
+document.getElementById('nb-ecrans').textContent = nb;
+
+let currentQuota = 0;
+let currentOffer = "";
+
+async function checkAccount() {
+    const { data: { user } } = await _supabase.auth.getUser();
+    if (user) {
+        const { data } = await _supabase.from('annonceurs').select('*').eq('id', user.id).single();
+        if (data) {
+            currentQuota = data.nb_ecrans || 0;
+            currentOffer = data.offre || "Aucune";
+            const info = document.getElementById('info-quotas');
+            if (currentQuota > 0) {
+                info.innerHTML = `Offre actuelle : <b>${currentOffer}</b> (${currentQuota} écrans).`;
+                if (currentQuota >= nb) {
+                    info.innerHTML += " <br><span class='text-green-300 font-bold'>✓ Sélection couverte par votre forfait. Activation gratuite.</span>";
+                }
+            } else {
+                info.textContent = "Aucune offre active.";
+            }
+        }
+    }
+}
+
+function selectOffer(el) {
+    document.querySelectorAll('.uc, .pack').forEach(item => item.style.boxShadow = "none");
+    el.style.boxShadow = "0 0 0 2px #00D4FF";
+}
+
+async function validerChoix(nom, prixUnitaire){
+    const engagement = ann ? "Annuel" : "Mensuel";
+    let prixTotal = nom.includes("Pack") ? prixUnitaire : (prixUnitaire * nb);
+    const { data: { user } } = await _supabase.auth.getUser();
+
+    if (currentQuota >= nb) {
+        if (user) {
+            await _supabase.from('annonceurs').update({ 
+                offre: nom,
+                nb_ecrans: nb,
+                engagement: engagement,
+                prix_mensuel: prixTotal
+            }).eq('id', user.id);
+        }
+        window.location.href = "dashboard-annonceur.html";
+        return;
+    }
+    
+    window.location.href = `paiement.html?offre=${encodeURIComponent(nom)}&prix=${prixTotal}&ecrans=${nb}&engagement=${engagement}`;
+}
+
+window.onload = () => { render(); checkAccount(); };
+</script>
+</body>
+</html>

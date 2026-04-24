@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejoindre LoopyAd — Choisissez votre profil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bleu-fonce: #003366;
+            --bleu-cyan: #00D1FF;
+            --gris-fond: #F8FAFC;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--gris-fond); margin: 0; }
+        
+        nav { height: 76px !important; }
+
+        .card-choice {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .card-choice:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Dégradé signature LoopyAd pour les boutons */
+        .btn-gradient {
+            background: linear-gradient(135deg, #00D4FF 0%, #0A2540 100%);
+            transition: opacity 0.3s ease;
+        }
+        .btn-gradient:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <nav class="bg-white border-b sticky top-0 z-50 flex items-center justify-between px-10">
+        <div class="flex items-center gap-12">
+            <a href="index.html">
+                <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" alt="LoopyAd" style="height: 35px;">
+            </a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <a href="login-hote.html" class="text-[14px] font-bold text-slate-800 hover:bg-slate-50 px-4 py-2 rounded-full transition">Connexion</a>
+            <a href="choix-inscription.html" class="text-[14px] font-bold bg-black text-white px-5 py-2.5 rounded-full transition">Inscription</a>
+            
+            <div class="h-6 w-[1px] bg-slate-200 mx-2"></div>
+
+            <a href="annonceur.html" 
+               class="px-6 py-2.5 text-[13px] font-bold text-white rounded-xl transition shadow-lg shadow-cyan-500/20 btn-gradient">
+                Lancer une campagne
+            </a>
+        </div>
+    </nav>
+
+    <div class="flex-1 flex flex-col items-center justify-center px-6 py-16">
+        <div class="text-center max-w-2xl mb-16">
+            <h1 class="text-5xl font-[900] text-[#003366] tracking-tight leading-tight">
+                Prêt à commencer ?
+            </h1>
+            <p class="mt-4 text-xl text-slate-500 font-medium">
+                Sélectionnez votre type de compte pour rejoindre le réseau.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl w-full">
+            
+            <a href="inscription-annonceur.html" class="card-choice bg-white p-12 rounded-[40px] border border-slate-100 flex flex-col items-center text-center group">
+                <div class="w-24 h-24 bg-cyan-50 rounded-3xl flex items-center justify-center text-5xl mb-8 group-hover:scale-110 transition-transform">
+                    🚀
+                </div>
+                <h2 class="text-3xl font-[900] text-[#003366] mb-4 uppercase tracking-tighter">Je suis Annonceur</h2>
+                <p class="text-slate-500 mb-10 leading-relaxed font-medium">
+                    Diffusez vos publicités sur les écrans des commerces de votre quartier dès 19€.
+                </p>
+                <div class="mt-auto px-10 py-5 text-white rounded-2xl font-black text-lg shadow-xl shadow-cyan-500/20 btn-gradient w-full">
+                    Lancer ma campagne →
+                </div>
+            </a>
+
+            <a href="inscription-hote.html" class="card-choice bg-white p-12 rounded-[40px] border border-slate-100 flex flex-col items-center text-center group">
+                <div class="w-24 h-24 bg-blue-50 rounded-3xl flex items-center justify-center text-5xl mb-8 group-hover:scale-110 transition-transform">
+                    📺
+                </div>
+                <h2 class="text-3xl font-[900] text-[#003366] mb-4 uppercase tracking-tighter">Je suis Hôte</h2>
+                <p class="text-slate-500 mb-10 leading-relaxed font-medium">
+                    Installez un écran gratuitement et gagnez une commission sur chaque publicité diffusée.
+                </p>
+                <div class="mt-auto px-10 py-5 text-white rounded-2xl font-black text-lg shadow-xl shadow-cyan-500/20 btn-gradient w-full">
+                    Monétiser mon espace →
+                </div>
+            </a>
+
+        </div>
+
+        <div class="mt-20 flex items-center gap-8 opacity-40 grayscale">
+             <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" alt="Logo" class="h-6">
+             <span class="text-sm font-bold uppercase tracking-[0.2em] text-[#003366]">Le DOOH Hyperlocal</span>
+        </div>
+    </div>
+
+</body>
+</html>
