@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
     <style>
-        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        body { font-family: 'Inter', system-ui, sans-serif; }
     </style>
 </head>
 <body class="bg-white text-slate-900">
@@ -22,61 +22,63 @@
             </div>
         </div>
         <div class="flex items-center gap-4">
-            <a href="Login.html" class="px-6 py-2.5 text-[15px] font-bold text-slate-900 hover:bg-slate-50 rounded-xl transition-all">Connexion</a>
-            <a href="choix-inscription.html" class="px-6 py-2.5 text-[15px] font-bold bg-black text-white rounded-full hover:bg-slate-800 transition-all">Inscription</a>
+            <a href="Login.html" class="px-6 py-2.5 text-[15px] font-bold text-slate-900 hover:bg-slate-50 rounded-xl">Connexion</a>
+            <a href="choix-inscription.html" class="px-6 py-2.5 text-[15px] font-bold bg-black text-white rounded-full">Inscription</a>
             <div class="w-[1px] h-6 bg-slate-200 mx-2"></div>
-            <a href="annonceur.html" class="px-6 py-2.5 text-[15px] font-bold bg-[#00D4FF] text-white rounded-xl hover:shadow-lg hover:shadow-cyan-100 transition-all">Lancer une campagne</a>
+            <a href="annonceur.html" class="px-6 py-2.5 text-[15px] font-bold bg-[#00D4FF] text-white rounded-xl">Lancer une campagne</a>
         </div>
     </nav>
 
-    <main>
-        </main>
+    <main class="min-h-[50vh] flex items-center justify-center bg-slate-50">
+        <div class="text-center">
+            <h1 class="text-5xl font-black mb-4">Bienvenue sur LoopyAd</h1>
+            <p class="text-gray-500">La marketplace publicitaire hyperlocale.</p>
+        </div>
+    </main>
 
-    <footer class="bg-[#031B34] text-white py-10"> <div class="max-w-7xl mx-auto px-10">
+    <footer class="bg-[#031B34] text-white py-10">
+        <div class="max-w-7xl mx-auto px-10">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-10">
                 <div>
                     <h3 class="text-lg font-black mb-6 tracking-wider uppercase text-slate-100">Commerce Hôte</h3>
                     <ul class="space-y-4">
-                        <li><a href="hote.html" class="text-slate-400 hover:text-white transition-colors">Recevoir un écran gratuit</a></li>
+                        <li><a href="hote.html" class="text-slate-400 hover:text-white">Recevoir un écran gratuit</a></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="text-lg font-black mb-6 tracking-wider uppercase text-slate-100">Annonceur</h3>
                     <ul class="space-y-4">
-                        <li><a href="annonceur.html" class="text-slate-400 hover:text-white transition-colors">Lancer une campagne</a></li>
+                        <li><a href="annonceur.html" class="text-slate-400 hover:text-white">Lancer une campagne</a></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="text-lg font-black mb-6 tracking-wider uppercase text-slate-100">Application</h3>
                     <div class="flex flex-col gap-4">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" class="h-10 w-fit cursor-pointer">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store" class="h-10 w-fit cursor-pointer">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" class="h-8 w-fit cursor-pointer">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store" class="h-8 w-fit cursor-pointer">
                     </div>
                 </div>
                 <div>
                     <h3 class="text-lg font-black mb-6 tracking-wider uppercase text-slate-100">Entreprise</h3>
                     <ul class="space-y-4">
-                        <li><a href="#" class="text-slate-400 hover:text-white transition-colors">À propos</a></li>
+                        <li><a href="#" class="text-slate-400 hover:text-white">À propos</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="flex flex-col items-center border-t border-slate-800 pt-8">
-                <div class="flex gap-8 mb-8">
-                    <a href="#" class="text-xs font-bold text-slate-500 hover:text-white uppercase tracking-widest transition-colors">Politique de confidentialité</a>
-                    <a href="conditions-utilisation.html" class="text-xs font-bold text-slate-500 hover:text-white uppercase tracking-widest transition-colors">Conditions d'utilisation</a>
-                    <a href="#" class="text-xs font-bold text-[#00D4FF] hover:text-white uppercase tracking-widest transition-colors">Support</a>
+                <div class="flex gap-8 mb-8 text-[11px] font-bold text-slate-500 uppercase tracking-widest">
+                    <a href="#" class="hover:text-white">Politique de confidentialité</a>
+                    <a href="conditions-utilisation.html" class="hover:text-white">Conditions d'utilisation</a>
+                    <a href="#" class="text-[#00D4FF]">Support</a>
                 </div>
-                
                 <p class="text-slate-500 text-[11px] mb-6">© 2026 LoopyAd — Marketplace DOOH hyperlocale.</p>
-                
                 <div class="flex gap-6">
-                    <a href="dashboard-admin.html" class="text-[10px] font-black text-cyan-500/50 hover:text-cyan-400 transition-colors uppercase tracking-[0.2em]">Espace Admin</a>
-                    <a href="dashboard-commerciaux.html" class="text-[10px] font-black text-cyan-500/50 hover:text-cyan-400 transition-colors uppercase tracking-[0.2em]">Espace Commerciaux</a>
+                    <a href="dashboard-admin.html" class="text-[10px] font-black text-cyan-500/30 hover:text-cyan-400 uppercase tracking-[0.2em]">Espace Admin</a>
+                    <a href="dashboard-commerciaux.html" class="text-[10px] font-black text-cyan-500/30 hover:text-cyan-400 uppercase tracking-[0.2em]">Espace Commerciaux</a>
                 </div>
             </div>
         </div>
     </footer>
-
 </body>
 </html>
