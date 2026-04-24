@@ -2,105 +2,121 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion — LoopyAd</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --bleu-fonce: #003366; --gris-fond: #F8FAFC; }
+        :root { --brand-blue: #003366; --bg-gray: #F8FAFC; }
         
-        /* On force le body à prendre toute la hauteur pour le centrage */
-        html, body { height: 100%; margin: 0; }
-        
+        /* Reset & Layout Engine */
+        html, body { height: 100%; margin: 0; padding: 0; }
         body { 
             font-family: 'Inter', sans-serif; 
-            background: var(--gris-fond); 
+            background-color: var(--bg-gray); 
             display: flex; 
             flex-direction: column; 
         }
-        
-        /* SECTION CENTRALE : C'est ici que la magie opère */
-        .page-content {
-            flex: 1; /* Prend tout l'espace libre */
+
+        /* Conteneur de Vue : Centre la carte dans l'espace disponible */
+        .viewport-container {
+            flex: 1 0 auto; /* Permet au contenu de s'étendre sans casser le footer */
             display: flex;
-            align-items: center; /* Centre verticalement la carte */
-            justify-content: center; /* Centre horizontalement la carte */
-            padding: 40px 20px;
+            align-items: center; 
+            justify-content: center;
+            padding: 80px 24px; /* Ratio d'or pour l'espacement vertical */
         }
 
+        /* Carte de Connexion : Standard Design System Premium */
         .login-card { 
-            background: white; 
-            padding: 45px; 
-            border-radius: 35px; 
-            box-shadow: 0 20px 60px -15px rgba(0, 51, 102, 0.1); 
+            background: #FFFFFF; 
+            padding: 56px; 
+            border-radius: 40px; 
+            box-shadow: 0 40px 100px -20px rgba(0, 51, 102, 0.06); 
             width: 100%; 
-            max-width: 480px; 
-            text-align: center; 
+            max-width: 500px; 
+            border: 1px solid rgba(226, 232, 240, 0.6);
         }
 
-        label { display: block; text-align: left; font-weight: 700; font-size: 13px; margin-bottom: 8px; color: #334155; }
+        /* Typography & Inputs */
+        h1 { letter-spacing: -0.04em; color: var(--brand-blue); }
+        label { font-size: 13px; font-weight: 700; color: #475569; margin-bottom: 8px; display: block; text-align: left; }
         
-        input { 
+        .input-field { 
             width: 100%; 
-            padding: 16px; 
-            border-radius: 12px; 
+            padding: 16px 20px; 
+            border-radius: 14px; 
             border: 1px solid #E2E8F0; 
-            margin-bottom: 25px; 
-            box-sizing: border-box; 
-            font-family: inherit; 
             background: #FDFDFD;
+            font-size: 15px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
+        .input-field:focus { border-color: var(--brand-blue); outline: none; box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.05); }
 
-        .btn-login { 
+        .btn-primary { 
             width: 100%; 
-            background: var(--bleu-fonce); 
+            background: var(--brand-blue); 
             color: white; 
             padding: 18px; 
             border-radius: 16px; 
             font-weight: 800; 
-            border: none; 
-            cursor: pointer; 
             font-size: 16px;
-            transition: 0.2s;
+            transition: all 0.2s;
+            cursor: pointer;
         }
-        .btn-login:hover { background: #002d5a; transform: scale(1.01); }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 20px -5px rgba(0, 51, 102, 0.2); }
+
+        /* Footer Wrapper pour injection */
+        #footer-placeholder { flex-shrink: 0; }
     </style>
 </head>
 <body>
 
-    <nav class="flex justify-between items-center py-6 px-20 bg-white border-b border-slate-100">
-        <a href="index.html"><img src="https://i.ibb.co/SHgMNn6/loppyad4.png" class="h-[38px]" alt="LoopyAd"></a>
-        <div class="flex items-center gap-6">
+    <nav class="flex justify-between items-center py-6 px-12 md:px-24 bg-white border-b border-slate-100 z-10">
+        <a href="index.html" class="transition hover:opacity-80">
+            <img src="https://i.ibb.co/SHgMNn6/loppyad4.png" class="h-[36px]" alt="LoopyAd Logo">
+        </a>
+        <div class="flex items-center gap-8">
             <a href="Login.html" class="text-[14px] font-bold text-slate-800">Connexion</a>
-            <a href="choix-inscription.html" class="text-[14px] font-bold bg-black text-white px-6 py-3 rounded-full hover:bg-zinc-800 transition">Inscription</a>
+            <a href="choix-inscription.html" class="text-[14px] font-bold bg-black text-white px-7 py-3.5 rounded-full transition hover:bg-slate-800 shadow-lg shadow-black/5">Inscription</a>
         </div>
     </nav>
 
-    <div class="page-content">
+    <main class="viewport-container">
         <div class="login-card">
-            <h1 class="text-[32px] font-black text-[#003366] mb-3 tracking-tighter">Bon retour !</h1>
-            <p id="form-subtitle" class="text-slate-400 text-[16px] mb-10">Connectez-vous à votre espace Annonceur</p>
+            <div class="text-center mb-10">
+                <h1 class="text-[36px] font-[900] mb-3">Bon retour !</h1>
+                <p id="form-subtitle" class="text-slate-400 text-[16px] font-medium">Accédez à votre plateforme publicitaire</p>
+            </div>
             
-            <div class="flex bg-slate-100 p-1.5 rounded-2xl mb-10">
-                <button id="btn-annonceur" class="flex-1 py-3 rounded-xl font-bold text-[13px] bg-white shadow-sm text-[#003366]" onclick="switchTab('annonceur')">Annonceur</button>
-                <button id="btn-hote" class="flex-1 py-3 rounded-xl font-bold text-[13px] text-slate-500" onclick="switchTab('hote')">Hôte</button>
+            <div class="flex bg-slate-100/80 p-1.5 rounded-2xl mb-10">
+                <button id="btn-annonceur" class="flex-1 py-3.5 rounded-xl font-bold text-[13px] bg-white shadow-sm text-[#003366] transition-all" onclick="switchTab('annonceur')">Annonceur</button>
+                <button id="btn-hote" class="flex-1 py-3.5 rounded-xl font-bold text-[13px] text-slate-500 transition-all" onclick="switchTab('hote')">Hôte</button>
             </div>
 
-            <form id="login-form">
-                <label>Adresse Email</label>
-                <input type="email" id="email" placeholder="nom@exemple.com" required>
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label>Adresse Email</label>
+                    <input type="email" id="email" class="input-field" placeholder="nom@exemple.com" required>
+                </div>
                 
-                <label>Mot de passe</label>
-                <input type="password" id="password" placeholder="••••••••" required>
+                <div>
+                    <label>Mot de passe</label>
+                    <input type="password" id="password" class="input-field" placeholder="••••••••" required>
+                </div>
                 
-                <button type="button" id="btn-submit" onclick="handleLogin()" class="btn-login">Se connecter</button>
+                <button type="button" id="btn-submit" onclick="handleLogin()" class="btn-primary mt-4">
+                    Se connecter à LoopyAd
+                </button>
             </form>
 
-            <div class="mt-10 text-[14px] text-slate-400">
-                Pas encore de compte ? <a href="choix-inscription.html" class="text-[#003366] font-bold hover:underline">S'inscrire</a>
+            <div class="mt-12 text-center">
+                <span class="text-slate-400 text-[14px]">Nouveau ici ?</span>
+                <a href="choix-inscription.html" class="text-[#003366] font-bold text-[14px] ml-1 hover:underline underline-offset-4">Créer un compte gratuitement</a>
             </div>
         </div>
-    </div>
+    </main>
 
     <div id="footer-placeholder"></div>
 
@@ -109,24 +125,28 @@
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyZnhlaGV0dWVxYXp5a3p3cmh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5NjQ4NjksImV4cCI6MjA5MjU0MDg2OX0.tqw6lik68x0js0VVm-xAuLFZ17mFf3LM6h5g85eow68';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // Footer Injection Logic
         fetch('footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer-placeholder').innerHTML = data;
-            });
+            .then(res => res.ok ? res.text() : Promise.reject('Footer non trouvé'))
+            .then(data => document.getElementById('footer-placeholder').innerHTML = data)
+            .catch(err => console.warn(err));
 
         function switchTab(type) {
             const btnA = document.getElementById('btn-annonceur');
             const btnH = document.getElementById('btn-hote');
             const subtitle = document.getElementById('form-subtitle');
+            
+            const activeClass = "flex-1 py-3.5 rounded-xl font-bold text-[13px] bg-white shadow-sm text-[#003366]";
+            const inactiveClass = "flex-1 py-3.5 rounded-xl font-bold text-[13px] text-slate-500";
+            
             if(type === 'annonceur') {
-                btnA.className = "flex-1 py-3 rounded-xl font-bold text-[13px] bg-white shadow-sm text-[#003366]";
-                btnH.className = "flex-1 py-3 rounded-xl font-bold text-[13px] text-slate-500";
-                subtitle.innerText = "Connectez-vous à votre espace Annonceur";
+                btnA.className = activeClass;
+                btnH.className = inactiveClass;
+                subtitle.innerText = "Accédez à votre plateforme publicitaire";
             } else {
-                btnH.className = "flex-1 py-3 rounded-xl font-bold text-[13px] bg-white shadow-sm text-[#003366]";
-                btnA.className = "flex-1 py-3 rounded-xl font-bold text-[13px] text-slate-500";
-                subtitle.innerText = "Connectez-vous à votre espace Hôte";
+                btnH.className = activeClass;
+                btnA.className = inactiveClass;
+                subtitle.innerText = "Gérez vos revenus et vos écrans hôteliers";
             }
         }
 
